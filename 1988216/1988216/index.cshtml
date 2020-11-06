@@ -1,0 +1,29 @@
+﻿@using _1988216.MVC.Controllers
+
+@{
+
+
+    if (Session["username"] == null)
+    {
+        @RenderPage($"~/MVC/Views/pages/login.cshtml");
+    }
+    else
+    {
+        if (Request["c"] == null)
+        {
+            @RenderPage("~/MVC/Views/pages/home.cshtml");
+        }
+        else
+        {
+            try
+            {
+                @RenderPage($"~/MVC/Views/pages/{Request["c"].ToLower()}.cshtml");
+
+            }
+            catch
+            {
+                @RenderPage($"~/MVC/Views/pages/home.cshtml");
+            }
+        }
+    }
+}
