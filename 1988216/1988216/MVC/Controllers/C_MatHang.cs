@@ -23,6 +23,11 @@ namespace _1988216.MVC.Controllers
         {
             return m_matHang.addNewProduct(tenMatHang, hanSD, congTySX, namSX, gia, category);
         }
+
+        public bool deleteProduct(int id)
+        {
+            return m_matHang.deleteProduct(id);
+        }
          
     }         
 }

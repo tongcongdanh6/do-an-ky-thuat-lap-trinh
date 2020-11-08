@@ -1,13 +1,34 @@
 ﻿@using _1988216.MVC.Models;
 @using _1988216.MVC.Controllers;
+@using _1988216.MVC.Core;
 @{
     Layout = "~/MVC/Views/_Layout.cshtml";
     Page.Title = "Danh sách mặt hàng";
+
+    // Redirect if user read directly the file in the MVC Folder
+    Lib lib = new Lib();
+    if (!lib.isValidUrl())
+    {
+        Response.Redirect("/?c=dsmathang");
+    }
 
     C_MatHang c_MatHang = new C_MatHang();
     C_LoaiHang c_LoaiHang = new C_LoaiHang();
     List<MatHang> listMatHang = c_MatHang.getAllProduct();
     List<LoaiHang> listLoaiHang = c_LoaiHang.getAllCategory();
+
+    string mess = String.Empty;
+
+    if(IsPost)
+    {
+        if(Request["act"] == "delete")
+        {
+            mess = "Xoa " + Request["idOfProductToDelete"];
+            c_MatHang.deleteProduct(int.Parse(Request["idOfProductToDelete"]));
+
+            Response.Redirect("/?c=dsmathang");
+        }
+    }
 
     @*IEnumerable<MatHang> list2 = listMatHang.Where(item => item.Id > 1);*@
 }
@@ -15,13 +36,17 @@
 <main>
     <div class="container-fluid">
         <!-- Section: Hoverable -->
+        <h2>@mess</h2>
         <section>
 
-            <div class="card">
+            <div class="card card-cascade">
+                <div class="view view-cascade gradient-card-header blue-gradient">
+                    <h2 class="h2-responsive mb-0 font-weight-500">Danh sách mặt hàng</h2>
+                </div>
                 <div class="card-body">
 
                     <!-- Table -->
-                    <table class="table table-hover">
+                    <table class="table table-hover" id="tableMatHang">
 
                         <!-- Table head -->
                         <thead class="mdb-color darken-3">
@@ -47,10 +72,10 @@
                                     <td>@mh.CongTySX</td>
                                     <td>@DateTime.Parse(mh.NamSX).GetDateTimeFormats()[9]</td>
                                     <td>
-                                        @{ 
-                                            foreach(LoaiHang lh in listLoaiHang)
+                                        @{
+                                            foreach (LoaiHang lh in listLoaiHang)
                                             {
-                                                if(mh.LoaiHang == lh.Id)
+                                                if (mh.LoaiHang == lh.Id)
                                                 {
                                                     @lh.TenLoaiHang;
                                                     break;
@@ -59,10 +84,15 @@
                                         }
                                     </td>
                                     <td>
-                                        Sửa | Xóa
+
+                                        <a class="btn btn-indigo waves-effect waves-light" href="#">Sửa</a>
+                                        <button class="btn btn-secondary waves-effect waves-light"
+                                                data-toggle="modal" data-mhid=@mh.Id data-target="#confirmModal">
+                                            Xóa
+                                        </button>
                                     </td>
-                            </tr>
-                        }
+                                </tr>
+                            }
                         </tbody>
                         <!-- Table body -->
                     </table>
@@ -73,5 +103,65 @@
 
         </section>
         <!-- Section: Hoverable -->
+
+        <!-- Modal -->
+        <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-notify modal-danger" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <p class="heading">Xác nhận việc xóa mặt hàng</p>
+
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true" class="white-text">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="row">
+                            <div class="col-3">
+                                <p></p>
+                                <p class="text-center"><i class="fas fa-shopping-cart fa-4x"></i></p>
+                            </div>
+
+                            <div class="col-9">
+                                <p>
+                                    Việc thực hiện thao tác XÓA MẶT HÀNG làm cho dữ liệu vĩnh viễn mất đi và có thể không khôi phục lại được? Bạn có thực sự muốn XÓA MẶT HÀNG mang MÃ MẶT HÀNG bên dưới?
+                                </p>
+                                <h2><span class="badge" id="confirmModal-idmh">Mã mặt hàng: </span></h2>
+                            </div>
+                        </div>
+                    </div>
+                    <form action="/?c=dsmathang&act=delete" id="frmConfirm" method="post">
+                        <input type="hidden" name="idOfProductToDelete" id="idOfProductToDelete" value="" />
+                        <div class="modal-footer justify-content-center">
+                            <button type="submit" class="btn btn-danger px-3 waves-effect waves-light" id="deleteBtn">XÓA</i></button>
+                            <a class="btn btn-outline-danger waves-effect px-3" data-dismiss="modal">Hủy thao tác</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+
     </div>
+
 </main>
+
+<script>
+    $("#tableMatHang .btn").on("click", function () {
+        let id = $(this).data("mhid");
+        $("#confirmModal-idmh").html("Mã mặt hàng: " + id);
+        $("#idOfProductToDelete").val(id);
+       @* $("#frmConfirm").attr("action", "/?c=dsmathang&act=delete");*@
+
+@*        $("#deleteBtn").on("click", function () {
+            location.href = "/?c=dsmathang&act=delete&id="+id;
+        });*@
+    });
+</script>
+
+
+
+

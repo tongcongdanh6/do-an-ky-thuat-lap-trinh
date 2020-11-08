@@ -90,5 +90,37 @@ namespace _1988216.MVC.Models
                 return false;
             }
         }
+
+        public bool deleteProduct(int id)
+        {
+            List<MatHang> listMatHang = this.getMatHang();
+
+            foreach (MatHang mh in listMatHang)
+            {
+                if (mh.Id == id)
+                {
+                    listMatHang.Remove(mh);
+                    break;
+                }
+            }
+
+            // Convert list to Array and Convert to JSON
+            string json = JsonConvert.SerializeObject(listMatHang.ToArray());
+
+            // Write to file
+            try
+            {
+                string filePath = HttpContext.Current.Server.MapPath("~/MVC/Models/MatHangData.json");
+
+                StreamWriter file = new StreamWriter(filePath);
+                file.WriteLine(json);
+                file.Close();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }
