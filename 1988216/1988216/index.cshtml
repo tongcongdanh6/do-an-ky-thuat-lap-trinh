@@ -5,7 +5,15 @@
 
     if (Session["username"] == null)
     {
-        @RenderPage($"~/MVC/Views/pages/login.cshtml");
+        if (Request["c"] == null)
+        {
+            @RenderPage($"~/MVC/Views/pages/login.cshtml", new { returnUrl = HttpUtility.UrlEncode(HttpContext.Current.Request.Url.AbsoluteUri) + "?c=home" });
+        }
+        else
+        {
+            @RenderPage($"~/MVC/Views/pages/login.cshtml", new { returnUrl = HttpUtility.UrlEncode(HttpContext.Current.Request.Url.AbsoluteUri) });
+        }
+
     }
     else
     {
@@ -18,7 +26,6 @@
             try
             {
                 @RenderPage($"~/MVC/Views/pages/{Request["c"].ToLower()}.cshtml");
-
             }
             catch
             {

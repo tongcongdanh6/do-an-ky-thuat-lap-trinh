@@ -1,0 +1,29 @@
+﻿@using _1988216.MVC.Models;
+@using _1988216.MVC.Controllers;
+
+@{
+    Layout = null;
+    C_LoaiHang c = new C_LoaiHang();
+    bool a = false;
+    List<LoaiHang> list = new List<LoaiHang>();
+    string message = String.Empty;
+    if(IsPost)
+    {
+        if (c.addNewCategory(Request["tenLoaiHang"]))
+        {
+            message = "Thêm loại hàng thành công";
+        }
+        else
+        {
+            message = "Thêm loại hàng Thất Bại";
+        }
+    }
+}
+
+<div>
+    <form method="POST" action="~/MVC/Views/pages/themloaihang.cshtml">
+        <input type="text" name="tenLoaiHang" />
+        <input type="submit" value="Submit" />
+    </form>
+    @message
+</div>

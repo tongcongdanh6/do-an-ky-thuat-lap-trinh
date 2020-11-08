@@ -1,17 +1,13 @@
-﻿@using _1988216.MVC.Controllers
+﻿@using _1988216.MVC.Core
 @{
     Layout = "~/MVC/Views/_Layout.cshtml";
     Page.Title = "Home Page";
 
-    C_home home = new C_home();
-    string message = "asdasd";
+    Lib lib = new Lib();
 
-    if (IsPost)
+    if(!lib.isValidUrl())
     {
-        if (home.check() == true)
-        {
-            message = "Danh";
-        }
+        Response.Redirect("/?c=home");
     }
 
 }

@@ -1,0 +1,41 @@
+﻿@using _1988216.MVC.Models;
+@using _1988216.MVC.Controllers;
+
+@{
+    Layout = null;
+    C_MatHang c = new C_MatHang();
+    string message = String.Empty;
+    if(IsPost)
+    {
+        if (c.addNewProduct(
+            Request["tenMatHang"], 
+            Request["hanSD"], 
+            Request["congTySX"], 
+            Request["namSX"], 
+            int.Parse(Request["gia"]), 
+            int.Parse(Request["category"]))
+            )
+        {
+            message = "Thêm loại hàng thành công";
+        }
+        else
+        {
+            message = "Thêm loại hàng Thất Bại";
+        }
+    }
+}
+
+<div>
+    <form method="POST" action="~/MVC/Views/pages/themmathang.cshtml">
+        Tên mặt hàng
+        <input type="text" name="tenMatHang" /><br />
+        <input type="date" name="hanSD" /><br />
+        <input type="text" name="congTySX" /><br />
+        <input type="date" name="namSX" /><br />
+        <input type="number" name="gia" /><br />
+        <input type="number" name="category" /><br />
+
+        <input type="submit" value="Submit" />
+    </form>
+    @message
+</div>

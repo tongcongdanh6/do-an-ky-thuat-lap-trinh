@@ -1,0 +1,42 @@
+﻿{
+  "mathang": [
+    {
+      "Id": 1,
+      "TenMatHang": "Dầu gội đầu",
+      "HanSD": "2020-11-27T00:00:00.000Z",
+      "CongTySX": "Sunsilk",
+      "NamSX": "2019-10-12T00:00:00.000Z",
+      "Gia": 35000,
+      "LoaiHang": 1
+
+    },
+    {
+      "Id": 2,
+      "TenMatHang": "Sữa tắm",
+      "HanSD": "2020-11-22T00:00:00.000Z",
+      "CongTySX": "Lifeboyce",
+      "NamSX": "2018-05-12T00:00:00.000Z",
+      "Gia": 60000,
+      "LoaiHang": 1
+    },
+    {
+      "Id": 3,
+      "TenMatHang": "Bàn chải đánh răng",
+      "HanSD": "2020-11-22T00:00:00.000Z",
+      "CongTySX": "Colgate",
+      "NamSX": "2018-05-12T00:00:00.000Z",
+      "Gia": 15000,
+      "LoaiHang": 2
+    }
+  ],
+  "loaihang": [
+    {
+      "id": 1,
+      "TenLoaiHang": "Mỹ phẩm"
+    },
+    {
+      "id": 2,
+      "TenLoaiHang": "Đồ dùng gia đình"
+    }
+  ]
+}

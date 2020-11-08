@@ -5,7 +5,7 @@
     if(IsPost)
     {
         Session["username"] = Request["username"];
-        Response.Redirect("~/?c=" + Request["returnUrl"]);
+        Response.Redirect(Request["returnUrl"]);
     }
 }
 
@@ -65,7 +65,7 @@
                             <!-- Form with header -->
                             <div class="card wow fadeIn" data-wow-delay="0.3s">
                                 <div class="card-body">
-                                    <form action="~/MVC/Views/pages/login.cshtml?returnUrl=home" method="post">
+                                    <form action="~/MVC/Views/pages/login.cshtml?returnUrl=@Page.ReturnUrl" method="post">
                                         <!-- Header -->
                                         <div class="form-header purple-gradient">
                                             <h3 class="font-weight-500 my-2 py-1"><i class="fas fa-user"></i> Đăng nhập:</h3>
