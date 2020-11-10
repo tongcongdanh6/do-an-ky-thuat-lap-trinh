@@ -26,6 +26,11 @@
             try
             {
                 @RenderPage($"~/MVC/Views/pages/{Request["c"].ToLower()}.cshtml");
+                if(Request["act"] == "logout")
+                {
+                    Session.Clear();
+                    Response.Redirect("/?c=home");
+                }
             }
             catch
             {

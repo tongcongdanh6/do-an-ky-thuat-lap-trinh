@@ -28,6 +28,11 @@
 
             Response.Redirect("/?c=dsmathang");
         }
+
+        if(Request["act"] == "timkiem")
+        {
+            listMatHang = c_MatHang.searchProduct(Request["searchType"], Request["keyword"]);
+        }
     }
 
     @*IEnumerable<MatHang> list2 = listMatHang.Where(item => item.Id > 1);*@
@@ -36,8 +41,33 @@
 <main>
     <div class="container-fluid">
         <!-- Section: Hoverable -->
-        <h2>@mess</h2>
         <section>
+            <div class="card pl-5 py-2 mb-5">
+                <form class="form-inline" id="frm-search" method="post" action="/?c=dsmathang&act=timkiem">
+                    <div class="md-form my-0">
+                        <input class="form-control mr-sm-2" type="text" name="keyword" id="keyword" placeholder="Nhập từ khóa vào đây" aria-label="Search">
+                        <b>Tìm kiếm theo: </b>
+                        <select class="browser-default custom-select" name="searchType" id="searchType" style="display: inline!important; font-family: inherit">
+                            <option value="stype_maHang">Mã hàng</option>
+                            <option value="stype_tenMatHang">Tên mặt hàng</option>
+                            <option value="stype_hanSD">Hạn sử dụng</option>
+                            <option value="stype_congTySX">Công ty sản xuất</option>
+                            <option value="stype_namSX">Năm sản xuất</option>
+                            <option value="stype_loaiHang">Loại hàng</option>
+                        </select>
+                        <button class="btn btn-outline-black btn-sm" id="dark-mode">Tìm kiếm</button>
+                    </div>
+                </form>
+                <div id="tip" class="text-success small-text"><b></b></div>
+            </div>
+
+            @{
+                if (Request["act"] == "timkiem")
+                {
+                    <a href="/?c=dsmathang" class="btn btn-secondary waves-effect waves-light">Load lại đầy đủ dữ liệu</a>
+                }
+            }
+
 
             <div class="card card-cascade">
                 <div class="view view-cascade gradient-card-header blue-gradient">
@@ -98,6 +128,20 @@
                     </table>
                     <!-- Table -->
 
+                    @{
+
+                        if (Request["act"] == "timkiem")
+                        {
+                            if (listMatHang.Count == 0)
+                            {
+                                <div>Không tìm thấy kết quả ứng với từ khóa:  <b>@Request["keyword"]</b></div>
+                            }
+                            else
+                            {
+                                <div>Tìm thấy <b>@listMatHang.Count mặt hàng</b> khớp từ khóa <b>@Request["keyword"]</b></div>
+                            }
+                        }
+                    }
                 </div>
             </div>
 
@@ -154,11 +198,30 @@
         let id = $(this).data("mhid");
         $("#confirmModal-idmh").html("Mã mặt hàng: " + id);
         $("#idOfProductToDelete").val(id);
-       @* $("#frmConfirm").attr("action", "/?c=dsmathang&act=delete");*@
+    });
 
-@*        $("#deleteBtn").on("click", function () {
-            location.href = "/?c=dsmathang&act=delete&id="+id;
-        });*@
+
+    $(document).ready(function () {
+        $(`#searchType option[value="${document.cookie}"]`).prop("selected", true);
+    });
+
+    $("#searchType").on("change", function () {
+
+        document.cookie = this.value;
+        
+
+
+        switch (this.value) {
+            case "stype_hanSD":
+            case "stype_namSX":
+                $("#keyword").prop("placeholder", "mm/dd/yyyy");
+                $("#tip").html("Nhập <b>>=mm/dd/yyyy</b> để tìm mặt hàng SAU ngày này, hoặc nhập <b><=mm/dd/yyyy</b> để tìm mặt hàng TRƯỚC ngày này");
+                break;
+            default:
+                $("#keyword").prop("placeholder", "Nhập từ khóa vào đây");
+                $("#tip").html("");
+        }
+        console.log(this.value);
     });
 </script>
 
