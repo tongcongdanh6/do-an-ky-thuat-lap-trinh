@@ -1,8 +1,8 @@
-[
-  {
-    "Id": 1,
-    "TenLoaiHang": "Mỹ phẩm"
-  },
+﻿[
+	{
+		"Id": 1,
+		"TenLoaiHang": "Mỹ phẩm"
+	},
   {
     "Id": 2,
     "TenLoaiHang": "Đồ dùng gia đình"

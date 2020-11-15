@@ -3,16 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using _1988216.MVC.Models;
+using _1988216.MVC.Core;
 
 namespace _1988216.MVC.Controllers
 {
     public class C_MatHang
     {
+        private Lib lib;
         private M_MatHang m_matHang;
 
         public C_MatHang()
         {
-            this.m_matHang = new M_MatHang();
+           m_matHang = new M_MatHang();
+           lib = new Lib();
         }
         public List<MatHang> getAllProduct()
         {
@@ -31,64 +34,80 @@ namespace _1988216.MVC.Controllers
 
         public List<MatHang> searchProduct(string searchType, string keyword)
         {
-            List<MatHang> resultList = new List<MatHang>();
-            List<MatHang> listMatHangfromDB = m_matHang.getMatHang();
-
-            switch (searchType)
+            try
             {
-                case "stype_maHang":
-                    foreach(MatHang mh in listMatHangfromDB)
-                    {
-                        if(mh.Id == int.Parse(keyword))
-                        {
-                            resultList.Add(mh);
-                            break;
-                        }
-                    }
-                    break;
-
-                case "stype_tenMatHang":
-                    foreach (MatHang mh in listMatHangfromDB)
-                    {
-                        if (mh.TenMatHang.ToLower().Contains(keyword.ToLower()))
-                        {
-                            resultList.Add(mh);
-                        }
-                    }
-                    break;
-
-                case "stype_hanSD":
-                    if(keyword.Trim().Contains(">="))
-                    {
-                        string timestamp = keyword.Replace(">=", "");
-                        DateTime ts = DateTime.Parse(timestamp);
+                List<MatHang> resultList = new List<MatHang>();
+                List<MatHang> listMatHangfromDB = m_matHang.getMatHang();
+                switch (searchType)
+                {
+                    case "stype_maHang":
                         foreach (MatHang mh in listMatHangfromDB)
                         {
-                            if(DateTime.Parse(mh.HanSD) >= ts)
+                            if (mh.Id == int.Parse(keyword))
+                            {
+                                resultList.Add(mh);
+                                break;
+                            }
+                        }
+                        break;
+
+                    case "stype_tenMatHang":
+                        foreach (MatHang mh in listMatHangfromDB)
+                        {
+                            if (mh.TenMatHang.ToLower().Contains(keyword.ToLower()))
                             {
                                 resultList.Add(mh);
                             }
                         }
-                    }
+                        break;
 
-                    if (keyword.Trim().Contains("<="))
-                    {
-                        string timestamp = keyword.Replace("<=", "");
-                        DateTime ts = DateTime.Parse(timestamp);
-                        foreach (MatHang mh in listMatHangfromDB)
+                    case "stype_hanSD":
+                        if (keyword.Trim().Contains(">="))
                         {
-                            if (DateTime.Parse(mh.HanSD) <= ts)
+                            DateTime ts = lib.convertStringToDateTimeWithOperator(">=", keyword);
+
+                            foreach (MatHang mh in listMatHangfromDB)
                             {
-                                resultList.Add(mh);
+                                if (DateTime.Parse(mh.HanSD) >= ts)
+                                {
+                                    resultList.Add(mh);
+                                }
                             }
                         }
-                    }
 
-                    break;
+                        if (keyword.Trim().Contains("<="))
+                        {
+                            DateTime ts = lib.convertStringToDateTimeWithOperator("<=", keyword);
+                            foreach (MatHang mh in listMatHangfromDB)
+                            {
+                                if (DateTime.Parse(mh.HanSD) <= ts)
+                                {
+                                    resultList.Add(mh);
+                                }
+                            }
+                        }
+
+                        if (keyword.Trim().Contains("=="))
+                        {
+                            DateTime ts = lib.convertStringToDateTimeWithOperator("==", keyword);
+                            foreach (MatHang mh in listMatHangfromDB)
+                            {
+                                if (DateTime.Parse(mh.HanSD) == ts)
+                                {
+                                    resultList.Add(mh);
+                                }
+                            }
+                        }
+
+                        break;
+                }
+                return resultList;
             }
-
-            return resultList;
+            catch
+            {
+                return new List<MatHang>();
+            }
         }
-         
-    }         
+
+    }
 }

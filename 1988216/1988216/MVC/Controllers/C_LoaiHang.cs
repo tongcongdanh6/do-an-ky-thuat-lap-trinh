@@ -17,14 +17,14 @@ namespace _1988216.MVC.Controllers
 
         public List<LoaiHang> getAllCategory()
         {
-            
+
             return m_loaiHang.getLoaiHang();
         }
 
         public bool addNewCategory(string tenLoaiHang)
         {
             return m_loaiHang.addNewCategory(tenLoaiHang);
-            
+
         }
     }
 }

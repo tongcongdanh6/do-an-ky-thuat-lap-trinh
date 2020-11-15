@@ -3,39 +3,39 @@
 @{
 
 
-    if (Session["username"] == null)
-    {
-        if (Request["c"] == null)
-        {
-            @RenderPage($"~/MVC/Views/pages/login.cshtml", new { returnUrl = HttpUtility.UrlEncode(HttpContext.Current.Request.Url.AbsoluteUri) + "?c=home" });
-        }
-        else
-        {
-            @RenderPage($"~/MVC/Views/pages/login.cshtml", new { returnUrl = HttpUtility.UrlEncode(HttpContext.Current.Request.Url.AbsoluteUri) });
-        }
+	if (Session["username"] == null)
+	{
+		if (Request["c"] == null)
+		{
+			@RenderPage($"~/MVC/Views/pages/login.cshtml", new { returnUrl = HttpUtility.UrlEncode(HttpContext.Current.Request.Url.AbsoluteUri) + "?c=home" });
+		}
+		else
+		{
+			@RenderPage($"~/MVC/Views/pages/login.cshtml", new { returnUrl = HttpUtility.UrlEncode(HttpContext.Current.Request.Url.AbsoluteUri) });
+		}
 
-    }
-    else
-    {
-        if (Request["c"] == null)
-        {
-            @RenderPage("~/MVC/Views/pages/home.cshtml");
-        }
-        else
-        {
-            try
-            {
-                @RenderPage($"~/MVC/Views/pages/{Request["c"].ToLower()}.cshtml");
-                if(Request["act"] == "logout")
-                {
-                    Session.Clear();
-                    Response.Redirect("/?c=home");
-                }
-            }
-            catch
-            {
-                @RenderPage($"~/MVC/Views/pages/home.cshtml");
-            }
-        }
-    }
+	}
+	else
+	{
+		if (Request["c"] == null)
+		{
+			@RenderPage("~/MVC/Views/pages/home.cshtml");
+		}
+		else
+		{
+			try
+			{
+				@RenderPage($"~/MVC/Views/pages/{Request["c"].ToLower()}.cshtml");
+				if (Request["act"] == "logout")
+				{
+					Session.Clear();
+					Response.Redirect("/?c=home");
+				}
+			}
+			catch
+			{
+				@RenderPage($"~/MVC/Views/pages/home.cshtml");
+			}
+		}
+	}
 }

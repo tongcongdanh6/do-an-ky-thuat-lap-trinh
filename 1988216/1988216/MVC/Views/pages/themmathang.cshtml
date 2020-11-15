@@ -3,156 +3,156 @@
 @using _1988216.MVC.Core;
 
 @{
-    Layout = Layout = "~/MVC/Views/_Layout.cshtml";
-    Page.Title = "Thêm mặt hàng";
+	Layout = Layout = "~/MVC/Views/_Layout.cshtml";
+	Page.Title = "Thêm mặt hàng";
 
-    // Redirect if user read directly the file in the MVC Folder
-    Lib lib = new Lib();
-    if (!lib.isValidUrl())
-    {
-        Response.Redirect("/?c=themmathang");
-    }
+	// Redirect if user read directly the file in the MVC Folder
+	Lib lib = new Lib();
+	if (!lib.isValidUrl())
+	{
+		Response.Redirect("/?c=themmathang");
+	}
 
-    C_MatHang c_MatHang = new C_MatHang();
-    C_LoaiHang c_LoaiHang = new C_LoaiHang();
+	C_MatHang c_MatHang = new C_MatHang();
+	C_LoaiHang c_LoaiHang = new C_LoaiHang();
 
-    List<LoaiHang> listLoaiHang = c_LoaiHang.getAllCategory();
+	List<LoaiHang> listLoaiHang = c_LoaiHang.getAllCategory();
 
 
-    string mess = String.Empty;
-    if (IsPost)
-    {
+	string mess = String.Empty;
+	if (IsPost)
+	{
 
-        if (c_MatHang.addNewProduct(
-            Request["productName"],
-            Request["productDateExpire"],
-            Request["productCompany"],
-            Request["productDateMade"],
-            int.Parse(Request["productPrice"]),
-            int.Parse(Request["productCategory"]))
-            )
-        {
-            mess = "Thêm loại hàng thành công";
-            Response.Redirect("/?c=dsmathang");
-        }
-        else
-        {
-            mess = "Thêm loại hàng Thất Bại";
-        }
-    }
+		if (c_MatHang.addNewProduct(
+			Request["productName"],
+			Request["productDateExpire"],
+			Request["productCompany"],
+			Request["productDateMade"],
+			int.Parse(Request["productPrice"]),
+			int.Parse(Request["productCategory"]))
+			)
+		{
+			mess = "Thêm loại hàng thành công";
+			Response.Redirect("/?c=dsmathang");
+		}
+		else
+		{
+			mess = "Thêm loại hàng Thất Bại";
+		}
+	}
 }
 
 
 <main>
-    <div class="container-fluid">
-        @mess
-        <form method="post" action="/?c=themmathang">
-            <!-- Section: Inputs -->
-            <section class="section card card-cascade mb-5">
-                <div class="view view-cascade gradient-card-header blue-gradient">
-                    <h2 class="h2-responsive mb-0 font-weight-500">Thêm mặt hàng mới</h2>
-                </div>
+	<div class="container-fluid">
+		@mess
+		<form method="post" action="/?c=themmathang">
+			<!-- Section: Inputs -->
+			<section class="section card card-cascade mb-5">
+				<div class="view view-cascade gradient-card-header blue-gradient">
+					<h2 class="h2-responsive mb-0 font-weight-500">Thêm mặt hàng mới</h2>
+				</div>
 
-                <div class="card-body">
+				<div class="card-body">
 
-                    <h5></h5>
+					<h5></h5>
 
-                    <!-- Grid row -->
-                    <div class="row">
-
-
-                        <div class="col-md-6 mb-1">
-
-                            <div class="md-form md-outline">
-                                <input type="text" id="productName" name="productName" class="form-control">
-                                <label for="productName" class="">Tên mặt hàng</label>
-                            </div>
-
-                        </div>
-
-                        <div class="col-md-6 mb-1">
-
-                            <div class="md-form md-outline">
-                                <input type="text" id="productCompany" name="productCompany" class="form-control">
-                                <label for="productCompany" class="">Tên công ty sản xuất</label>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6 mb-1">
-
-                            <div class="md-form md-outline">
-                                <div class="md-form md-outline">
-                                    <input type="number" id="productPrice" name="productPrice" class="form-control">
-                                    <label for="productPrice" class="">Giá</label>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                    <!-- Grid column -->
-                    <!-- Grid row -->
-                    <!-- Grid row -->
-                    <div class="row">
-
-                        <!-- Grid column -->
-                        <div class="col-md-6 mb-1">
-
-                            <div class="md-form md-outline">
-                                <input type="date" id="productDateMade" name="productDateMade" class="form-control">
-                                <label class="active" for="productDateMade">Ngày sản xuất</label>
-                            </div>
-
-                        </div>
-                        <!-- Grid column -->
-                        <!-- Grid column -->
-                        <div class="col-md-6 mb-1">
-
-                            <div class="md-form md-outline">
-                                <input type="date" id="productDateExpire" name="productDateExpire" class="form-control">
-                                <label class="active" for="productDateExpire">Hạn sử dụng</label>
-                            </div>
-
-                        </div>
-                        <!-- Grid column -->
-
-                    </div>
-                    <!-- Grid row -->
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <select class="mdb-select md-form" id="productCategory" name="productCategory" searchable="Tìm kiếm loại hàng tại đây..">
-                                <option value="" disabled selected>Chọn loại hàng</option>
-                                @{
-                                    foreach (LoaiHang lh in listLoaiHang)
-                                    {
-                                        <option value="@lh.Id">@lh.TenLoaiHang</option>
-                                    }
-                                }
-
-                            </select>
-                        </div>
-                    </div>
+					<!-- Grid row -->
+					<div class="row">
 
 
-                    <div class="row text-center">
-                        <div class="col">
-                            <button type="submit" class="btn btn-indigo waves-effect waves-light">THÊM</button>
-                        </div>
-                    </div>
-                </div>
+						<div class="col-md-6 mb-1">
 
-            </section>
-        </form>
-        <!-- Section: Inputs -->
-    </div>
+							<div class="md-form md-outline">
+								<input type="text" id="productName" name="productName" class="form-control">
+								<label for="productName" class="">Tên mặt hàng</label>
+							</div>
 
-    <script>
+						</div>
+
+						<div class="col-md-6 mb-1">
+
+							<div class="md-form md-outline">
+								<input type="text" id="productCompany" name="productCompany" class="form-control">
+								<label for="productCompany" class="">Tên công ty sản xuất</label>
+							</div>
+
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6 mb-1">
+
+							<div class="md-form md-outline">
+								<div class="md-form md-outline">
+									<input type="number" id="productPrice" name="productPrice" class="form-control">
+									<label for="productPrice" class="">Giá</label>
+								</div>
+							</div>
+
+						</div>
+					</div>
+					<!-- Grid column -->
+					<!-- Grid row -->
+					<!-- Grid row -->
+					<div class="row">
+
+						<!-- Grid column -->
+						<div class="col-md-6 mb-1">
+
+							<div class="md-form md-outline">
+								<input type="date" id="productDateMade" name="productDateMade" class="form-control">
+								<label class="active" for="productDateMade">Ngày sản xuất</label>
+							</div>
+
+						</div>
+						<!-- Grid column -->
+						<!-- Grid column -->
+						<div class="col-md-6 mb-1">
+
+							<div class="md-form md-outline">
+								<input type="date" id="productDateExpire" name="productDateExpire" class="form-control">
+								<label class="active" for="productDateExpire">Hạn sử dụng</label>
+							</div>
+
+						</div>
+						<!-- Grid column -->
+
+					</div>
+					<!-- Grid row -->
+
+					<div class="row">
+						<div class="col-md-6">
+							<select class="mdb-select md-form" id="productCategory" name="productCategory" searchable="Tìm kiếm loại hàng tại đây..">
+								<option value="" disabled selected>Chọn loại hàng</option>
+								@{
+									foreach (LoaiHang lh in listLoaiHang)
+									{
+										<option value="@lh.Id">@lh.TenLoaiHang</option>
+									}
+								}
+
+							</select>
+						</div>
+					</div>
+
+
+					<div class="row text-center">
+						<div class="col">
+							<button type="submit" class="btn btn-indigo waves-effect waves-light">THÊM</button>
+						</div>
+					</div>
+				</div>
+
+			</section>
+		</form>
+		<!-- Section: Inputs -->
+	</div>
+
+	<script>
         // Material Select Initialization
         $(document).ready(function () {
             $("#productName").focus();
         });
-    </script>
+	</script>
 </main>

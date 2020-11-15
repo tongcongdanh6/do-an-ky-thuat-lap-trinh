@@ -15,7 +15,7 @@ namespace _1988216.MVC.Controllers
         public bool checkUrl()
         {
             bool valid = true;
-            if(HttpContext.Current.Request.Url.AbsolutePath != "/")
+            if (HttpContext.Current.Request.Url.AbsolutePath != "/")
             {
                 valid = false;
             }

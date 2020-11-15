@@ -7,7 +7,6 @@ using System.Web.Script.Serialization;
 using System.Linq;
 using System.Web;
 
-
 namespace _1988216.MVC.Models
 {
 
@@ -33,10 +32,10 @@ namespace _1988216.MVC.Models
                     // Thêm mặt hàng mới vào List
                     listLoaiHang.Add(lh);
                 }
-                
+
                 return listLoaiHang;
             }
-            
+
         }
 
         public bool addNewCategory(string tenLoaiHang)
@@ -45,9 +44,9 @@ namespace _1988216.MVC.Models
             int maxId = listLoaiHang.ElementAt<LoaiHang>(0).Id;
 
             // Find MAX VALUE OF ID
-            foreach(LoaiHang lh in listLoaiHang)
+            foreach (LoaiHang lh in listLoaiHang)
             {
-                if(lh.Id > maxId)
+                if (lh.Id > maxId)
                 {
                     maxId = lh.Id;
                 }
@@ -60,7 +59,7 @@ namespace _1988216.MVC.Models
             LoaiHang newlh = new LoaiHang(newId, tenLoaiHang);
             listLoaiHang.Add(newlh);
 
-            
+
             // Convert list to Array and Convert to JSON
             string json = JsonConvert.SerializeObject(listLoaiHang.ToArray());
 

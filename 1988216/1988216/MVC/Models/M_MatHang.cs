@@ -22,7 +22,7 @@ namespace _1988216.MVC.Models
                 var json = r.ReadToEnd();
                 r.Close();
                 dynamic data = JsonConvert.DeserializeObject(json);
-                foreach(var jitem in data)
+                foreach (var jitem in data)
                 {
                     MatHang mh = new MatHang();
 
@@ -34,7 +34,7 @@ namespace _1988216.MVC.Models
                     mh.NamSX = jitem["NamSX"];
                     mh.Gia = jitem["Gia"];
                     mh.LoaiHang = jitem["LoaiHang"];
-                    
+
                     // Thêm mặt hàng mới vào List
                     listMatHang.Add(mh);
                 }

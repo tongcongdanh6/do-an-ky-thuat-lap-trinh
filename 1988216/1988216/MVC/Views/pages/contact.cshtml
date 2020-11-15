@@ -1,16 +1,16 @@
 ﻿@using _1988216.MVC.Core
 @{
-    Layout = Layout = "~/MVC/Views/_Layout.cshtml";
-    Page.Title = "Contact";
+	Layout = Layout = "~/MVC/Views/_Layout.cshtml";
+	Page.Title = "Contact";
 
-    Lib lib = new Lib();
-    if(!lib.isValidUrl())
-    {
-        Response.Redirect("/?c=contact");
-    }
+	Lib lib = new Lib();
+	if (!lib.isValidUrl())
+	{
+		Response.Redirect("/?c=contact");
+	}
 }
 
 <div>
 
-    @HttpContext.Current.Request.Url.AbsolutePath
+	@HttpContext.Current.Request.Url.AbsolutePath
 </div>

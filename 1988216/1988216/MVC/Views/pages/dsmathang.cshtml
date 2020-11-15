@@ -2,194 +2,195 @@
 @using _1988216.MVC.Controllers;
 @using _1988216.MVC.Core;
 @{
-    Layout = "~/MVC/Views/_Layout.cshtml";
-    Page.Title = "Danh sách mặt hàng";
+	Layout = "~/MVC/Views/_Layout.cshtml";
+	Page.Title = "Danh sách mặt hàng";
 
-    // Redirect if user read directly the file in the MVC Folder
-    Lib lib = new Lib();
-    if (!lib.isValidUrl())
-    {
-        Response.Redirect("/?c=dsmathang");
-    }
+	// Redirect if user read directly the file in the MVC Folder
+	Lib lib = new Lib();
+	Consts consts = new Consts (); // Text Const
 
-    C_MatHang c_MatHang = new C_MatHang();
-    C_LoaiHang c_LoaiHang = new C_LoaiHang();
-    List<MatHang> listMatHang = c_MatHang.getAllProduct();
-    List<LoaiHang> listLoaiHang = c_LoaiHang.getAllCategory();
+	if (!lib.isValidUrl())
+	{
+		Response.Redirect("/?c=dsmathang");
+	}
 
-    string mess = String.Empty;
+	C_MatHang c_MatHang = new C_MatHang();
+	C_LoaiHang c_LoaiHang = new C_LoaiHang();
+	List<MatHang> listMatHang = c_MatHang.getAllProduct();
+	List<LoaiHang> listLoaiHang = c_LoaiHang.getAllCategory();
 
-    if(IsPost)
-    {
-        if(Request["act"] == "delete")
-        {
-            mess = "Xoa " + Request["idOfProductToDelete"];
-            c_MatHang.deleteProduct(int.Parse(Request["idOfProductToDelete"]));
+	string mess = String.Empty;
 
-            Response.Redirect("/?c=dsmathang");
-        }
+	if (IsPost)
+	{
+		if (Request["act"] == "delete")
+		{
+			mess = "Xoa " + Request["idOfProductToDelete"];
+			c_MatHang.deleteProduct(int.Parse(Request["idOfProductToDelete"]));
 
-        if(Request["act"] == "timkiem")
-        {
-            listMatHang = c_MatHang.searchProduct(Request["searchType"], Request["keyword"]);
-        }
-    }
+			Response.Redirect("/?c=dsmathang");
+		}
 
-    @*IEnumerable<MatHang> list2 = listMatHang.Where(item => item.Id > 1);*@
+		if (Request["act"] == "timkiem")
+		{
+			listMatHang = c_MatHang.searchProduct(Request["searchType"], Request["keyword"]);
+		}
+	}
+
+	@*IEnumerable<MatHang> list2 = listMatHang.Where(item => item.Id > 1);*@
 }
 
 <main>
-    <div class="container-fluid">
-        <!-- Section: Hoverable -->
-        <section>
-            <div class="card pl-5 py-2 mb-5">
-                <form class="form-inline" id="frm-search" method="post" action="/?c=dsmathang&act=timkiem">
-                    <div class="md-form my-0">
-                        <input class="form-control mr-sm-2" type="text" name="keyword" id="keyword" placeholder="Nhập từ khóa vào đây" aria-label="Search">
-                        <b>Tìm kiếm theo: </b>
-                        <select class="browser-default custom-select" name="searchType" id="searchType" style="display: inline!important; font-family: inherit">
-                            <option value="stype_maHang">Mã hàng</option>
-                            <option value="stype_tenMatHang">Tên mặt hàng</option>
-                            <option value="stype_hanSD">Hạn sử dụng</option>
-                            <option value="stype_congTySX">Công ty sản xuất</option>
-                            <option value="stype_namSX">Năm sản xuất</option>
-                            <option value="stype_loaiHang">Loại hàng</option>
-                        </select>
-                        <button class="btn btn-outline-black btn-sm" id="dark-mode">Tìm kiếm</button>
-                    </div>
-                </form>
-                <div id="tip" class="text-success small-text"><b></b></div>
-            </div>
+	<div class="container-fluid">
+		<!-- Section: Hoverable -->
+		<section>
+			<div class="card pl-5 py-2 mb-5">
+				<form class="form-inline" id="frm-search" method="post" action="/?c=dsmathang&act=timkiem">
+					<div class="md-form my-0">
+						<input class="form-control mr-sm-2" type="text" name="keyword" id="keyword" placeholder="Nhập từ khóa vào đây" aria-label="Search" required oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('Nhập từ khóa tìm kiếm')">
+						<b>Tìm kiếm theo: </b>
+						<select class="browser-default custom-select" name="searchType" id="searchType" style="display: inline!important; font-family: inherit">
+							<option value="stype_maHang">Mã hàng</option>
+							<option value="stype_tenMatHang">Tên mặt hàng</option>
+							<option value="stype_hanSD">Hạn sử dụng</option>
+							<option value="stype_congTySX">Công ty sản xuất</option>
+							<option value="stype_namSX">Năm sản xuất</option>
+							<option value="stype_loaiHang">Loại hàng</option>
+						</select>
+						<button class="btn btn-outline-black btn-sm" id="dark-mode">Tìm kiếm</button>
+					</div>
+				</form>
+				<div id="tip" class="text-success small-text"><b></b></div>
+			</div>
 
-            @{
-                if (Request["act"] == "timkiem")
-                {
-                    <a href="/?c=dsmathang" class="btn btn-secondary waves-effect waves-light">Load lại đầy đủ dữ liệu</a>
-                }
-            }
-
-
-            <div class="card card-cascade">
-                <div class="view view-cascade gradient-card-header blue-gradient">
-                    <h2 class="h2-responsive mb-0 font-weight-500">Danh sách mặt hàng</h2>
-                </div>
-                <div class="card-body">
-
-                    <!-- Table -->
-                    <table class="table table-hover" id="tableMatHang">
-
-                        <!-- Table head -->
-                        <thead class="mdb-color darken-3">
-                            <tr class="text-white">
-                                <th>Mã hàng</th>
-                                <th>Tên mặt hàng</th>
-                                <th>Hạn sử dụng</th>
-                                <th>Công ty SX</th>
-                                <th>Năm SX</th>
-                                <th>Loại hàng</th>
-                                <th>Thao tác</th>
-                            </tr>
-                        </thead>
-                        <!-- Table head -->
-                        <!-- Table body -->
-                        <tbody>
-                            @foreach (MatHang mh in listMatHang)
-                            {
-                                <tr>
-                                    <th scope="row">@mh.Id</th>
-                                    <td>@mh.TenMatHang</td>
-                                    <td>@DateTime.Parse(mh.HanSD).GetDateTimeFormats()[9]</td>
-                                    <td>@mh.CongTySX</td>
-                                    <td>@DateTime.Parse(mh.NamSX).GetDateTimeFormats()[9]</td>
-                                    <td>
-                                        @{
-                                            foreach (LoaiHang lh in listLoaiHang)
-                                            {
-                                                if (mh.LoaiHang == lh.Id)
-                                                {
-                                                    @lh.TenLoaiHang;
-                                                    break;
-                                                }
-                                            }
-                                        }
-                                    </td>
-                                    <td>
-
-                                        <a class="btn btn-indigo waves-effect waves-light" href="#">Sửa</a>
-                                        <button class="btn btn-secondary waves-effect waves-light"
-                                                data-toggle="modal" data-mhid=@mh.Id data-target="#confirmModal">
-                                            Xóa
-                                        </button>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                        <!-- Table body -->
-                    </table>
-                    <!-- Table -->
-
-                    @{
-
-                        if (Request["act"] == "timkiem")
-                        {
-                            if (listMatHang.Count == 0)
-                            {
-                                <div>Không tìm thấy kết quả ứng với từ khóa:  <b>@Request["keyword"]</b></div>
-                            }
-                            else
-                            {
-                                <div>Tìm thấy <b>@listMatHang.Count mặt hàng</b> khớp từ khóa <b>@Request["keyword"]</b></div>
-                            }
-                        }
-                    }
-                </div>
-            </div>
-
-        </section>
-        <!-- Section: Hoverable -->
-
-        <!-- Modal -->
-        <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog modal-notify modal-danger" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <p class="heading">Xác nhận việc xóa mặt hàng</p>
-
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true" class="white-text">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-
-                        <div class="row">
-                            <div class="col-3">
-                                <p></p>
-                                <p class="text-center"><i class="fas fa-shopping-cart fa-4x"></i></p>
-                            </div>
-
-                            <div class="col-9">
-                                <p>
-                                    Việc thực hiện thao tác XÓA MẶT HÀNG làm cho dữ liệu vĩnh viễn mất đi và có thể không khôi phục lại được? Bạn có thực sự muốn XÓA MẶT HÀNG mang MÃ MẶT HÀNG bên dưới?
-                                </p>
-                                <h2><span class="badge" id="confirmModal-idmh">Mã mặt hàng: </span></h2>
-                            </div>
-                        </div>
-                    </div>
-                    <form action="/?c=dsmathang&act=delete" id="frmConfirm" method="post">
-                        <input type="hidden" name="idOfProductToDelete" id="idOfProductToDelete" value="" />
-                        <div class="modal-footer justify-content-center">
-                            <button type="submit" class="btn btn-danger px-3 waves-effect waves-light" id="deleteBtn">XÓA</i></button>
-                            <a class="btn btn-outline-danger waves-effect px-3" data-dismiss="modal">Hủy thao tác</a>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+			@{
+				if (Request["act"] == "timkiem")
+				{
+					<a href="/?c=dsmathang" class="btn btn-secondary waves-effect waves-light">Load lại đầy đủ dữ liệu</a>
+				}
+			}
 
 
+			<div class="card card-cascade">
+				<div class="view view-cascade gradient-card-header blue-gradient">
+					<h2 class="h2-responsive mb-0 font-weight-500">Danh sách mặt hàng</h2>
+				</div>
+				<div class="card-body">
 
-    </div>
+					<!-- Table -->
+					<table class="table table-hover" id="tableMatHang">
+
+						<!-- Table head -->
+						<thead class="mdb-color darken-3">
+							<tr class="text-white">
+								<th>Mã hàng</th>
+								<th>Tên mặt hàng</th>
+								<th>Hạn sử dụng</th>
+								<th>Công ty SX</th>
+								<th>Năm SX</th>
+								<th>Loại hàng</th>
+								<th>Thao tác</th>
+							</tr>
+						</thead>
+						<!-- Table head -->
+						<!-- Table body -->
+						<tbody>
+							@foreach (MatHang mh in listMatHang)
+							{
+								<tr>
+									<th scope="row">@mh.Id</th>
+									<td>@mh.TenMatHang</td>
+									<td>@DateTime.Parse(mh.HanSD).GetDateTimeFormats()[9]</td>
+									<td>@mh.CongTySX</td>
+									<td>@DateTime.Parse(mh.NamSX).GetDateTimeFormats()[9]</td>
+									<td>
+										@{
+											foreach (LoaiHang lh in listLoaiHang)
+											{
+												if (mh.LoaiHang == lh.Id)
+												{
+													@lh.TenLoaiHang;
+													break;
+												}
+											}
+										}
+									</td>
+									<td>
+
+										<a class="btn btn-indigo waves-effect waves-light" href="#">Sửa</a>
+										<button class="btn btn-secondary waves-effect waves-light"
+												data-toggle="modal" data-mhid=@mh.Id data-target="#confirmModal">
+											Xóa
+										</button>
+									</td>
+								</tr>
+							}
+						</tbody>
+						<!-- Table body -->
+					</table>
+					<!-- Table -->
+
+					@{
+
+						if (Request["act"] == "timkiem")
+						{
+							if (listMatHang.Count == 0)
+							{
+								<div>Không tìm thấy kết quả ứng với từ khóa:  <b>@Request["keyword"]</b></div>
+							}
+							else
+							{
+								<div>Tìm thấy <b>@listMatHang.Count mặt hàng</b> khớp từ khóa <b>@Request["keyword"]</b></div>
+							}
+						}
+					}
+				</div>
+			</div>
+
+		</section>
+		<!-- Section: Hoverable -->
+		<!-- Modal -->
+		<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+			 aria-hidden="true">
+			<div class="modal-dialog modal-notify modal-danger" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<p class="heading">Xác nhận việc xóa mặt hàng</p>
+
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true" class="white-text">×</span>
+						</button>
+					</div>
+					<div class="modal-body">
+
+						<div class="row">
+							<div class="col-3">
+								<p></p>
+								<p class="text-center"><i class="fas fa-shopping-cart fa-4x"></i></p>
+							</div>
+
+							<div class="col-9">
+								<p>
+									Việc thực hiện thao tác XÓA MẶT HÀNG làm cho dữ liệu vĩnh viễn mất đi và có thể không khôi phục lại được? Bạn có thực sự muốn XÓA MẶT HÀNG mang MÃ MẶT HÀNG bên dưới?
+								</p>
+								<h2><span class="badge" id="confirmModal-idmh">Mã mặt hàng: </span></h2>
+							</div>
+						</div>
+					</div>
+					<form action="/?c=dsmathang&act=delete" id="frmConfirm" method="post">
+						<input type="hidden" name="idOfProductToDelete" id="idOfProductToDelete" value="" />
+						<div class="modal-footer justify-content-center">
+							<button type="submit" class="btn btn-danger px-3 waves-effect waves-light" id="deleteBtn">XÓA</i></button>
+							<a class="btn btn-outline-danger waves-effect px-3" data-dismiss="modal">Hủy thao tác</a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+
+
+	</div>
 
 </main>
 
@@ -202,20 +203,24 @@
 
 
     $(document).ready(function () {
-        $(`#searchType option[value="${document.cookie}"]`).prop("selected", true);
+		$(`#searchType option[value="${document.cookie}"]`).prop("selected", true);
+		if (document.cookie == "stype_hanSD" || document.cookir == "stype_namSX")
+		{
+			$("#tip").html("Nhập <b>>=dd/mm/yyyy</b> để tìm mặt hàng SAU ngày này.<br>Nhập <b><=dd/mm/yyyy</b> để tìm mặt hàng TRƯỚC ngày này.<br>Nhập <b>==dd/mm/yyyy</b> để tìm mặt hàng ĐÚNG ngày này.");
+		}
     });
 
     $("#searchType").on("change", function () {
 
         document.cookie = this.value;
-        
+
 
 
         switch (this.value) {
             case "stype_hanSD":
             case "stype_namSX":
                 $("#keyword").prop("placeholder", "mm/dd/yyyy");
-                $("#tip").html("Nhập <b>>=mm/dd/yyyy</b> để tìm mặt hàng SAU ngày này, hoặc nhập <b><=mm/dd/yyyy</b> để tìm mặt hàng TRƯỚC ngày này");
+				$("#tip").html("Nhập <b>>=mm/dd/yyyy</b> để tìm mặt hàng SAU ngày này.<br>Nhập <b><=mm/dd/yyyy</b> để tìm mặt hàng TRƯỚC ngày này.<br>Nhập <b>==mm/dd/yyyy</b> để tìm mặt hàng ĐÚNG ngày này.");
                 break;
             default:
                 $("#keyword").prop("placeholder", "Nhập từ khóa vào đây");
@@ -224,7 +229,3 @@
         console.log(this.value);
     });
 </script>
-
-
-
-
