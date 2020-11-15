@@ -22,6 +22,34 @@ namespace _1988216.MVC.Controllers
             return m_matHang.getMatHang();
         }
 
+        public MatHang getProductById(string productId)
+        {
+            try
+            {
+                List<MatHang> list = m_matHang.getMatHang();
+                MatHang res = new MatHang();
+                foreach (MatHang mh in list)
+                {
+                    if (mh.Id == int.Parse(productId))
+                    {
+                        res = mh;
+                        break;
+                    }
+                }
+
+                // Modify format Date Time to display to input element in HTML View
+                res.HanSD = DateTime.Parse(res.HanSD).ToString("yyyy-MM-dd");
+                res.NamSX = DateTime.Parse(res.NamSX).ToString("yyyy-MM-dd");
+
+                return res;
+            }
+            catch
+            {
+                return new MatHang();
+            }
+            
+        }
+
         public bool addNewProduct(string tenMatHang, string hanSD, string congTySX, string namSX, int gia, int category)
         {
             return m_matHang.addNewProduct(tenMatHang, hanSD, congTySX, namSX, gia, category);
@@ -30,6 +58,19 @@ namespace _1988216.MVC.Controllers
         public bool deleteProduct(int id)
         {
             return m_matHang.deleteProduct(id);
+        }
+
+        public bool updateInfoProduct(string productId, string tenMatHang, string hanSD, string congTySX, string namSX, int gia, int category)
+        {
+            if(productId != "")
+            {
+                return m_matHang.updateInfoProduct(int.Parse(productId), tenMatHang, hanSD, congTySX, namSX, gia, category);
+            }
+            else
+            {
+                return false;
+            }
+            
         }
 
         public List<MatHang> searchProduct(string searchType, string keyword)

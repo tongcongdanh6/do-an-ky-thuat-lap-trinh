@@ -45,7 +45,7 @@ namespace _1988216.MVC.Models
         public bool addNewProduct(string tenMatHang, string hanSD, string congTySX, string namSX, int gia, int category)
         {
             List<MatHang> listMatHang = this.getMatHang();
-            int maxId = listMatHang.ElementAt<MatHang>(0).Id;
+            int maxId = listMatHang.ElementAt(0).Id;
 
             // Find MAX VALUE OF ID
             foreach (MatHang mh in listMatHang)
@@ -70,6 +70,64 @@ namespace _1988216.MVC.Models
             newMh.LoaiHang = category;
 
             listMatHang.Add(newMh);
+
+
+            // Convert list to Array and Convert to JSON
+            string json = JsonConvert.SerializeObject(listMatHang.ToArray());
+
+            // Write to file
+            try
+            {
+                string filePath = HttpContext.Current.Server.MapPath("~/MVC/Models/MatHangData.json");
+
+                StreamWriter file = new StreamWriter(filePath);
+                file.WriteLine(json);
+                file.Close();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool updateInfoProduct(int productId, string tenMatHang, string hanSD, string congTySX, string namSX, int gia, int category)
+        {
+            List<MatHang> listMatHang = this.getMatHang();
+
+
+            MatHang curMh = listMatHang.Find(mh => mh.Id == productId);
+            int idx = listMatHang.FindIndex(mh => mh.Id == productId);
+
+
+            curMh.TenMatHang = tenMatHang;
+            curMh.HanSD = hanSD;
+            curMh.CongTySX = congTySX;
+            curMh.NamSX = namSX;
+            curMh.Gia = gia;
+            curMh.LoaiHang = category;
+
+            listMatHang.RemoveAt(idx);
+            listMatHang.Add(curMh);
+
+            /*foreach(MatHang mh in listMatHang)
+            {
+                if(mh.Id == productId)
+                {
+                    // Update new Info
+                    mh.TenMatHang = tenMatHang;
+                    mh.HanSD = hanSD;
+                    mh.CongTySX = congTySX;
+                    mh.NamSX = namSX;
+                    mh.Gia = gia;
+                    mh.LoaiHang = category;
+
+                    listMatHang.
+
+                    break;
+                }
+                idx++;      
+            }*/
 
 
             // Convert list to Array and Convert to JSON
