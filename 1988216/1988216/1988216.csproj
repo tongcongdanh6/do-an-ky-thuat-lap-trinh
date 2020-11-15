@@ -119,6 +119,8 @@
     <Content Include="MVC\Views\pages\themloaihang.cshtml" />
     <Content Include="MVC\Views\pages\themmathang.cshtml" />
     <Content Include="MVC\Views\pages\suamathang.cshtml" />
+    <Content Include="MVC\Views\pages\dsloaihang.cshtml" />
+    <Content Include="MVC\Views\pages\sualoaihang.cshtml" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

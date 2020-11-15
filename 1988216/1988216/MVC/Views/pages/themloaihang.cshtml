@@ -1,29 +1,84 @@
 ﻿@using _1988216.MVC.Models;
 @using _1988216.MVC.Controllers;
+@using _1988216.MVC.Core;
 
 @{
-	Layout = null;
-	C_LoaiHang c = new C_LoaiHang();
-	bool a = false;
-	List<LoaiHang> list = new List<LoaiHang>();
-	string message = String.Empty;
-	if (IsPost)
-	{
-		if (c.addNewCategory(Request["tenLoaiHang"]))
-		{
-			message = "Thêm loại hàng thành công";
-		}
-		else
-		{
-			message = "Thêm loại hàng Thất Bại";
-		}
-	}
+    Layout = Layout = "~/MVC/Views/_Layout.cshtml";
+    Page.Title = "Thêm loại hàng";
+
+    // Redirect if user read directly the file in the MVC Folder
+    Lib lib = new Lib();
+    if (!lib.isValidUrl())
+    {
+        Response.Redirect("/?c=themloaihang");
+    }
+
+    C_LoaiHang c_LoaiHang = new C_LoaiHang();
+
+    List<LoaiHang> listLoaiHang = c_LoaiHang.getAllCategory();
+
+
+    string mess = String.Empty;
+    if (IsPost)
+    {
+        if (c_LoaiHang.addNewCategory(Request["categoryName"]))
+        {
+            mess = "Thêm loại hàng thành công";
+            Response.Redirect("/?c=dsloaihang");
+        }
+        else
+        {
+            mess = "Thêm loại hàng Thất Bại";
+        }
+    }
 }
 
-<div>
-	<form method="POST" action="~/MVC/Views/pages/themloaihang.cshtml">
-		<input type="text" name="tenLoaiHang" />
-		<input type="submit" value="Submit" />
-	</form>
-	@message
-</div>
+
+<main>
+    <div class="container-fluid">
+        @mess
+        <form method="post" action="/?c=themloaihang">
+            <!-- Section: Inputs -->
+            <section class="section card card-cascade mb-5">
+                <div class="view view-cascade gradient-card-header blue-gradient">
+                    <h2 class="h2-responsive mb-0 font-weight-500">Thêm loại hàng mới</h2>
+                </div>
+
+                <div class="card-body">
+
+                    <h5></h5>
+
+                    <!-- Grid row -->
+                    <div class="row">
+
+
+                        <div class="col-md-6 mb-1">
+
+                            <div class="md-form md-outline">
+                                <input type="text" id="categoryName" name="categoryName" class="form-control">
+                                <label for="categoryName" class="">Tên loại hàng</label>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="row text-center">
+                        <div class="col">
+                            <button type="submit" class="btn btn-indigo waves-effect waves-light">THÊM</button>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+        </form>
+        <!-- Section: Inputs -->
+    </div>
+
+    <script>
+        // Material Select Initialization
+        $(document).ready(function () {
+            $("#categoryName").focus();
+        });
+    </script>
+</main>

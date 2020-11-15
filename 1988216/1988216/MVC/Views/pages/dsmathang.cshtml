@@ -88,6 +88,7 @@
 								<th>Hạn sử dụng</th>
 								<th>Công ty SX</th>
 								<th>Năm SX</th>
+								<th>Giá (VNĐ)</th>
 								<th>Loại hàng</th>
 								<th>Thao tác</th>
 							</tr>
@@ -103,6 +104,7 @@
 									<td>@DateTime.Parse(mh.HanSD).GetDateTimeFormats()[9]</td>
 									<td>@mh.CongTySX</td>
 									<td>@DateTime.Parse(mh.NamSX).GetDateTimeFormats()[9]</td>
+									<td>@mh.Gia</td>
 									<td>
 										@{
 											foreach (LoaiHang lh in listLoaiHang)
