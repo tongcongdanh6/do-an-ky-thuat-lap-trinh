@@ -107,27 +107,11 @@ namespace _1988216.MVC.Models
             curMh.Gia = gia;
             curMh.LoaiHang = category;
 
+            // Delete Old Element with Id = productId
             listMatHang.RemoveAt(idx);
+
+            // Add curMh with Id = productId to the list
             listMatHang.Add(curMh);
-
-            /*foreach(MatHang mh in listMatHang)
-            {
-                if(mh.Id == productId)
-                {
-                    // Update new Info
-                    mh.TenMatHang = tenMatHang;
-                    mh.HanSD = hanSD;
-                    mh.CongTySX = congTySX;
-                    mh.NamSX = namSX;
-                    mh.Gia = gia;
-                    mh.LoaiHang = category;
-
-                    listMatHang.
-
-                    break;
-                }
-                idx++;      
-            }*/
 
 
             // Convert list to Array and Convert to JSON

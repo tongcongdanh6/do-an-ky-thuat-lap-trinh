@@ -11,10 +11,12 @@ namespace _1988216.MVC.Controllers
     {
         private Lib lib;
         private M_MatHang m_matHang;
+        private M_LoaiHang m_LoaiHang;
 
         public C_MatHang()
         {
            m_matHang = new M_MatHang();
+           m_LoaiHang = new M_LoaiHang();
            lib = new Lib();
         }
         public List<MatHang> getAllProduct()
@@ -134,6 +136,47 @@ namespace _1988216.MVC.Controllers
                             foreach (MatHang mh in listMatHangfromDB)
                             {
                                 if (DateTime.Parse(mh.HanSD) == ts)
+                                {
+                                    resultList.Add(mh);
+                                }
+                            }
+                        }
+
+                        break;
+
+                    case "stype_congTySX":
+                        resultList = listMatHangfromDB.FindAll(mh => mh.CongTySX.ToLower().Contains(keyword.ToLower()) == true);
+                        break;
+
+                    case "stype_namSX":
+                        if (keyword.Trim().Contains(">="))
+                        {
+                            DateTime ts = lib.convertStringToDateTimeWithOperator(">=", keyword);
+                            resultList = listMatHangfromDB.FindAll(mh => DateTime.Parse(mh.NamSX) >= ts);
+                        }
+
+                        if (keyword.Trim().Contains("<="))
+                        {
+                            DateTime ts = lib.convertStringToDateTimeWithOperator("<=", keyword);
+                            resultList = listMatHangfromDB.FindAll(mh => DateTime.Parse(mh.NamSX) <= ts);
+                        }
+
+                        if (keyword.Trim().Contains("=="))
+                        {
+                            DateTime ts = lib.convertStringToDateTimeWithOperator("==", keyword);
+                            resultList = listMatHangfromDB.FindAll(mh => DateTime.Parse(mh.NamSX) == ts);
+                        }
+                        break;
+
+                    case "stype_loaiHang":
+                        List<LoaiHang> listLoaiHang = m_LoaiHang.getLoaiHang();
+                        List<LoaiHang> filteredListLoaiHang = listLoaiHang.FindAll(lh => lh.TenLoaiHang.ToLower().Contains(keyword.ToLower()));
+
+                        foreach(LoaiHang lh in filteredListLoaiHang)
+                        {
+                            foreach(MatHang mh in listMatHangfromDB)
+                            {
+                                if(mh.LoaiHang == lh.Id)
                                 {
                                     resultList.Add(mh);
                                 }

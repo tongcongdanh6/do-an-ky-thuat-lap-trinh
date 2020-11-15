@@ -13,3 +13,4 @@
 ## Update ngày 15/11/2020
 + Sửa bug tìm kiếm theo hạn sử dụng
 + Thêm SỬA - Mặt hàng
++ Thêm TÌM KIẾM - Công ty SX, năm SX, Loại hàng
