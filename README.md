@@ -1,4 +1,4 @@
-# do-an-ky-thuat-lap-trinh
+# Log Phần mềm quản lý cửa hàng - Web Backend & Frontend
 
 ## Update ngày 8/11/2020
 - Thêm loại hàng
@@ -15,3 +15,6 @@
 + Thêm SỬA - Mặt hàng
 + Thêm TÌM KIẾM - Công ty SX, năm SX, Loại hàng
 + Thêm THÊM, SỬA, XÓA - Loại Hàng
+
+## Update ngày 18/11/2020
++ Thêm Tìm Kiếm Loại Hàng theo Tên Loại Hàng và Mã Loại Hàng

@@ -64,5 +64,43 @@ namespace _1988216.MVC.Controllers
                 return false;
             }
         }
+
+
+        public List<LoaiHang> searchCategory(string searchType, string keyword)
+        {
+            try
+            {
+                List<LoaiHang> resultList = new List<LoaiHang>();
+                List<LoaiHang> listCategoryFromDB = m_loaiHang.getLoaiHang();
+                switch (searchType)
+                {
+                    case "stype_maLoaiHang":
+                        foreach (LoaiHang lh in listCategoryFromDB)
+                        {
+                            if (lh.Id == int.Parse(keyword))
+                            {
+                                resultList.Add(lh);
+                                break;
+                            }
+                        }
+                        break;
+
+                    case "stype_tenLoaiHang":
+                        foreach (LoaiHang lh in listCategoryFromDB)
+                        {
+                            if (lh.TenLoaiHang.ToLower().Contains(keyword.ToLower()))
+                            {
+                                resultList.Add(lh);
+                            }
+                        }
+                        break;
+                }
+                return resultList;
+            }
+            catch
+            {
+                return new List<LoaiHang>();
+            }
+        }
     }
 }

@@ -29,11 +29,11 @@
                 Response.Redirect("/?c=dsloaihang");
             }
         }
-@*
-            if (Request["act"] == "timkiem")
-            {
-                listMatHang = c_MatHang.searchProduct(Request["searchType"], Request["keyword"]);
-            }*@
+
+        if (Request["act"] == "timkiem")
+        {
+            listLoaiHang = c_LoaiHang.searchCategory(Request["searchType"], Request["keyword"]);
+        }
     }
 
 }
@@ -116,7 +116,7 @@
                             }
                             else
                             {
-                                <div>Tìm thấy <b>@listLoaiHang.Count mặt hàng</b> khớp từ khóa <b>@Request["keyword"]</b></div>
+                                <div>Tìm thấy <b>@listLoaiHang.Count loại hàng</b> khớp từ khóa <b>@Request["keyword"]</b></div>
                             }
                         }
                     }
