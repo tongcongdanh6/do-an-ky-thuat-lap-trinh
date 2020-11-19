@@ -91,15 +91,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="public\img\visa.png" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MVC\Controllers\C_HoaDonBanHang.cs" />
     <Compile Include="MVC\Controllers\C_home.cs" />
     <Compile Include="MVC\Controllers\C_LoaiHang.cs" />
     <Compile Include="MVC\Controllers\C_MatHang.cs" />
     <Compile Include="MVC\Core\Consts.cs" />
     <Compile Include="MVC\Core\Lib.cs" />
     <Compile Include="MVC\Models\Models.cs" />
+    <Compile Include="MVC\Models\M_HoaDonBanHang.cs" />
     <Compile Include="MVC\Models\M_LoaiHang.cs" />
     <Compile Include="MVC\Models\M_MatHang.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -121,6 +124,9 @@
     <Content Include="MVC\Views\pages\suamathang.cshtml" />
     <Content Include="MVC\Views\pages\dsloaihang.cshtml" />
     <Content Include="MVC\Views\pages\sualoaihang.cshtml" />
+    <Content Include="MVC\Models\HoaDonBanHangData.json" />
+    <Content Include="MVC\Views\pages\chitiethoadonbanhang.cshtml" />
+    <Content Include="MVC\Views\pages\dshoadonbanhang.cshtml" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

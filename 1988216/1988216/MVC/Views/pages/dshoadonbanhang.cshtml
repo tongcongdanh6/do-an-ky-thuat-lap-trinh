@@ -3,7 +3,7 @@
 @using _1988216.MVC.Core;
 @{
 	Layout = "~/MVC/Views/_Layout.cshtml";
-	Page.Title = "Danh sách mặt hàng";
+	Page.Title = "Danh sách hóa đơn bán hàng";
 
 	// Redirect if user read directly the file in the MVC Folder
 	Lib lib = new Lib();
@@ -11,19 +11,17 @@
 
 	if (!lib.isValidUrl())
 	{
-		Response.Redirect("/?c=dsmathang");
+		Response.Redirect("/?c=dshoadonbanhang");
 	}
 
-	C_MatHang c_MatHang = new C_MatHang();
-	C_LoaiHang c_LoaiHang = new C_LoaiHang();
-	List<MatHang> listMatHang = c_MatHang.getAllProduct();
-	List<LoaiHang> listLoaiHang = c_LoaiHang.getAllCategory();
+	C_HoaDonBanHang c_HoaDonBanHang = new C_HoaDonBanHang();
+	List<HoaDonBanHang> listHoaDonBanHang = c_HoaDonBanHang.getHoaDonBanHang();
 
 	string mess = String.Empty;
 
 	if (IsPost)
 	{
-		if (Request["act"] == "delete")
+@*		if (Request["act"] == "delete")
 		{
 			mess = "Xoa " + Request["idOfProductToDelete"];
 			c_MatHang.deleteProduct(int.Parse(Request["idOfProductToDelete"]));
@@ -34,7 +32,7 @@
 		if (Request["act"] == "timkiem")
 		{
 			listMatHang = c_MatHang.searchProduct(Request["searchType"], Request["keyword"]);
-		}
+		}*@
 	}
 
 	@*IEnumerable<MatHang> list2 = listMatHang.Where(item => item.Id > 1);*@
@@ -50,12 +48,9 @@
 						<input class="form-control mr-sm-2" type="text" name="keyword" id="keyword" placeholder="Nhập từ khóa vào đây" aria-label="Search" required oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('Nhập từ khóa tìm kiếm')">
 						<b>Tìm kiếm theo: </b>
 						<select class="browser-default custom-select" name="searchType" id="searchType" style="display: inline!important; font-family: inherit">
-							<option value="stype_maHang">Mã hàng</option>
-							<option value="stype_tenMatHang">Tên mặt hàng</option>
-							<option value="stype_hanSD">Hạn sử dụng</option>
-							<option value="stype_congTySX">Công ty sản xuất</option>
-							<option value="stype_namSX">Năm sản xuất</option>
-							<option value="stype_loaiHang">Loại hàng</option>
+							<option value="stype_maHoaDonBanHang">Mã hóa đơn bán hàng</option>
+							<option value="stype_customerName">Tên khách hàng</option>
+							<option value="stype_paymentMethod">Hình thức thanh toán</option>
 						</select>
 						<button class="btn btn-outline-black btn-sm" id="dark-mode">Tìm kiếm</button>
 					</div>
@@ -73,58 +68,49 @@
 
 			<div class="card card-cascade">
 				<div class="view view-cascade gradient-card-header blue-gradient">
-					<h2 class="h2-responsive mb-0 font-weight-500">Danh sách mặt hàng</h2>
+					<h2 class="h2-responsive mb-0 font-weight-500">Danh sách hóa đơn bán hàng</h2>
 				</div>
 				<div class="card-body">
-
+                    <div class="text-primary">
+                        Có thể click vào <b>Tên khách hàng</b> để xem chi tiết hóa đơn.
+                    </div>
 					<!-- Table -->
 					<table class="table table-hover" id="tableMatHang">
 
 						<!-- Table head -->
 						<thead class="mdb-color darken-3">
 							<tr class="text-white">
-								<th>Mã hàng</th>
-								<th>Tên mặt hàng</th>
-								<th>Hạn sử dụng</th>
-								<th>Công ty SX</th>
-								<th>Năm SX</th>
-								<th>Giá (VNĐ)</th>
-								<th>Số lượng</th>
-								<th>Loại hàng</th>
+								<th>Mã hóa đơn</th>
+								<th>Tên khách hàng</th>
+								<th>Địa chỉ giao hàng</th>
+								<th>Số điện thoại</th>
+								<th>Hình thức thanh toán</th>
+								<th>Tổng bill</th>
+								<th>Số lượng hàng mua</th>
+								<th>Phí ship</th>
 								<th>Thao tác</th>
 							</tr>
 						</thead>
 						<!-- Table head -->
 						<!-- Table body -->
 						<tbody>
-							@foreach (MatHang mh in listMatHang)
-							{
+							@foreach (HoaDonBanHang hd in listHoaDonBanHang)
+                            {
 								<tr>
-									<th scope="row">@mh.Id</th>
-									<td>@mh.TenMatHang</td>
-									<td>@DateTime.Parse(mh.HanSD).GetDateTimeFormats()[9]</td>
-									<td>@mh.CongTySX</td>
-									<td>@DateTime.Parse(mh.NamSX).GetDateTimeFormats()[9]</td>
-									<td>@String.Format("{0:n0}",mh.Gia)</td>
-									<td>@mh.Quantity</td>
-									<td>
-										@{
-											foreach (LoaiHang lh in listLoaiHang)
-											{
-												if (mh.LoaiHang == lh.Id)
-												{
-													@lh.TenLoaiHang;
-													break;
-												}
-											}
-										}
-									</td>
+									<th scope="row">@hd.Id</th>
+									<td><a href="/?c=chitiethoadonbanhang&hdId=@hd.Id" data-toggle="tooltip" title="Click vào để xem chi tiết hóa đơn của khách hàng @hd.CustomerName">@hd.CustomerName</a></td>
+									<td>@hd.BillingAddress</td>
+									<td>@hd.Phone</td>
+									<td style="display:flex; justify-content: center;"><img src="~/public/img/@Html.Raw(hd.PaymentMethod+".png")" height="30"/></td>
+									<td>@String.Format("{0:n0}",hd.TotalValueOfBill) @hd.Currency</td>
+									<td>@hd.TotalOfQuantity</td>
+                                    <td>@String.Format("{0:n0}", hd.Shipfee) @hd.Currency</td>
 									<td>
 
-										<a class="btn btn-indigo waves-effect waves-light" href="/?c=suamathang&productId=@mh.Id">Sửa</a>
+										<a class="btn btn-indigo waves-effect waves-light" href="/?c=suahoadonbanhang&hoadonId=@hd.Id">Sửa</a>
 
 										<button class="btn btn-secondary waves-effect waves-light"
-												data-toggle="modal" data-mhid=@mh.Id data-target="#confirmModal">
+												data-toggle="modal" data-mhid=@hd.Id data-target="#confirmModal">
 											Xóa
 										</button>
 									</td>
@@ -139,13 +125,13 @@
 
 						if (Request["act"] == "timkiem")
 						{
-							if (listMatHang.Count == 0)
+							if (listHoaDonBanHang.Count == 0)
 							{
 								<div>Không tìm thấy kết quả ứng với từ khóa:  <b>@Request["keyword"]</b></div>
 							}
 							else
 							{
-								<div>Tìm thấy <b>@listMatHang.Count mặt hàng</b> khớp từ khóa <b>@Request["keyword"]</b></div>
+								<div>Tìm thấy <b>@listHoaDonBanHang.Count hóa đơn bán hàng</b> khớp từ khóa <b>@Request["keyword"]</b></div>
 							}
 						}
 					}
@@ -160,7 +146,7 @@
 			<div class="modal-dialog modal-notify modal-danger" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<p class="heading">Xác nhận việc xóa mặt hàng</p>
+						<p class="heading">Xác nhận việc xóa hóa đơn bán hàng</p>
 
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true" class="white-text">×</span>
@@ -178,11 +164,11 @@
 								<p>
 									Việc thực hiện thao tác XÓA MẶT HÀNG làm cho dữ liệu vĩnh viễn mất đi và có thể không khôi phục lại được? Bạn có thực sự muốn XÓA MẶT HÀNG mang MÃ MẶT HÀNG bên dưới?
 								</p>
-								<h2><span class="badge" id="confirmModal-idmh">Mã mặt hàng: </span></h2>
+								<h2><span class="badge" id="confirmModal-idmh">Mã hóa đơn bán hàng: </span></h2>
 							</div>
 						</div>
 					</div>
-					<form action="/?c=dsmathang&act=delete" id="frmConfirm" method="post">
+					<form action="/?c=dshoadonbanhang&act=delete" id="frmConfirm" method="post">
 						<input type="hidden" name="idOfProductToDelete" id="idOfProductToDelete" value="" />
 						<div class="modal-footer justify-content-center">
 							<button type="submit" class="btn btn-danger px-3 waves-effect waves-light" id="deleteBtn">XÓA</i></button>
@@ -200,9 +186,14 @@
 </main>
 
 <script>
+
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+
     $("#tableMatHang .btn").on("click", function () {
         let id = $(this).data("mhid");
-        $("#confirmModal-idmh").html("Mã mặt hàng: " + id);
+        $("#confirmModal-idmh").html("Mã hóa đơn bán hàng hàng: " + id);
         $("#idOfProductToDelete").val(id);
     });
 

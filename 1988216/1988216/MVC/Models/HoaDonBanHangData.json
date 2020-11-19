@@ -1,0 +1,48 @@
+﻿[
+  {
+    "id": 1,
+    "customerName": "Tong Cong Danh",
+    "dob": "25-12-1991",
+    "address": "Phuong 23, Quan Binh Thanh, Ho Chi Minh",
+    "phone": "0367596294",
+    "billing_address": "109B Hoàng Hoa Thám, Phường 6, Quận Bình Thạnh, Hồ Chí Minh",
+    "payment_method": "visa",
+    "shipfee": 30000,
+    "currency": "VNĐ",
+    "exchange_rate": 1,
+    "vat_tax": 0.1,
+    "products_sold": [
+      {
+        "id": 1,
+        "quantity": 2
+      },
+      {
+        "id": 2,
+        "quantity": 5
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "customerName": "Tong Cong Danh 2",
+    "dob": "26-12-1991",
+    "address": "Phuong 25, Quan Binh Thanh, Ho Chi Minh",
+    "phone": "0367596294",
+    "billing_address": "109B Hoàng Hoa Thám, Phường 6, Quận Bình Thạnh, Hồ Chí Minh",
+    "payment_method": "visa",
+    "shipfee": 50000,
+    "currency": "VNĐ",
+    "exchange_rate": 1,
+    "vat_tax": 0.1,
+    "products_sold": [
+      {
+        "id": 3,
+        "quantity": 12
+      },
+      {
+        "id": 4,
+        "quantity": 10
+      }
+    ]
+  }
+]

@@ -30,9 +30,38 @@ namespace _1988216.MVC.Models
         public string CongTySX { get; set; }
         public string NamSX { get; set; }
         public int Gia { get; set; }
+        public int Quantity { get; set; }
         public int LoaiHang { get; set; }
 
     }
+
+    public class ProductWithQuantity
+    {
+        public int Id { get; set; }
+
+        public int Quantity { get; set; }
+    }
+   
+
+    public class HoaDonBanHang
+    {
+        public int Id { get; set; }
+        public string CustomerName { get; set; }
+        public string Dob { get; set; }
+        public string Address { get; set; }
+        public string Phone { get; set; }
+        public string BillingAddress { get; set; }
+        public string PaymentMethod { get; set; }
+        public int Shipfee { get; set; }
+        public string Currency  { get; set; }
+        public int ExchangeRate  { get; set; }
+        public float VatTax  { get; set; }
+        public List<ProductWithQuantity> ProductSold { get; set; }
+
+        public float TotalValueOfBill { get; set; }
+        public float TotalOfQuantity { get; set; }
+    }
+
     public class Models
     {
 

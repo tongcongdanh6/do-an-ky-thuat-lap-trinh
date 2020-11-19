@@ -33,6 +33,7 @@ namespace _1988216.MVC.Models
                     mh.CongTySX = jitem["CongTySX"];
                     mh.NamSX = jitem["NamSX"];
                     mh.Gia = jitem["Gia"];
+                    mh.Quantity = jitem["Quantity"];
                     mh.LoaiHang = jitem["LoaiHang"];
 
                     // Thêm mặt hàng mới vào List

@@ -1,1 +1,72 @@
-[{"Id":1,"TenMatHang":"Dầu gội đầu","HanSD":"2020-11-27","CongTySX":"Sunsilk","NamSX":"2019-10-12","Gia":35000,"LoaiHang":1},{"Id":2,"TenMatHang":"Sữa tắm","HanSD":"11/22/2020 00:00:00","CongTySX":"Lifeboyce","NamSX":"05/12/2018 00:00:00","Gia":60000,"LoaiHang":1},{"Id":3,"TenMatHang":"Bàn chải đánh răng","HanSD":"11/22/2020 00:00:00","CongTySX":"Colgate","NamSX":"05/12/2018 00:00:00","Gia":15000,"LoaiHang":2},{"Id":5,"TenMatHang":"Kem chống nắng","HanSD":"2025-01-21","CongTySX":"Drunk Elephant","NamSX":"2019-01-01","Gia":380000,"LoaiHang":1},{"Id":6,"TenMatHang":"Bàn ủi","HanSD":"2020-12-10","CongTySX":"Panasonic","NamSX":"2020-10-06","Gia":250000,"LoaiHang":2},{"Id":4,"TenMatHang":"Thùng rác mini","HanSD":"2023-01-09","CongTySX":"Hưng Thịnh","NamSX":"2019-01-09","Gia":40000,"LoaiHang":2},{"Id":7,"TenMatHang":"Bộ bàn ghế gỗ cao cấp","HanSD":"2033-02-15","CongTySX":"Đà Lạt Wooden","NamSX":"2020-01-26","Gia":15000000,"LoaiHang":4}]
+[
+  {
+    "Id": 1,
+    "TenMatHang": "Dầu gội đầu",
+    "HanSD": "2020-11-27",
+    "CongTySX": "Sunsilk",
+    "NamSX": "2019-10-12",
+    "Gia": 35000,
+    "Quantity": 21,
+    "LoaiHang": 1
+  },
+  {
+    "Id": 2,
+    "TenMatHang": "Sữa tắm",
+    "HanSD": "11/22/2020 00:00:00",
+    "CongTySX": "Lifeboyce",
+    "NamSX": "05/12/2018 00:00:00",
+    "Gia": 60000,
+    "Quantity": 12,
+    "LoaiHang": 1
+  },
+  {
+    "Id": 3,
+    "TenMatHang": "Bàn chải đánh răng",
+    "HanSD": "11/22/2020 00:00:00",
+    "CongTySX": "Colgate",
+    "NamSX": "05/12/2018 00:00:00",
+    "Gia": 15000,
+    "Quantity": 41,
+    "LoaiHang": 2
+  },
+  {
+    "Id": 5,
+    "TenMatHang": "Kem chống nắng",
+    "HanSD": "2025-01-21",
+    "CongTySX": "Drunk Elephant",
+    "NamSX": "2019-01-01",
+    "Gia": 380000,
+    "Quantity": 15,
+    "LoaiHang": 1
+  },
+  {
+    "Id": 6,
+    "TenMatHang": "Bàn ủi",
+    "HanSD": "2020-12-10",
+    "CongTySX": "Panasonic",
+    "NamSX": "2020-10-06",
+    "Gia": 250000,
+    "Quantity": 10,
+    "LoaiHang": 2
+  },
+  {
+    "Id": 4,
+    "TenMatHang": "Thùng rác mini",
+    "HanSD": "2023-01-09",
+    "CongTySX": "Hưng Thịnh",
+    "NamSX": "2019-01-09",
+    "Gia": 40000,
+    "Quantity": 15,
+    "LoaiHang": 2
+  },
+  {
+    "Id": 7,
+    "TenMatHang": "Bộ bàn ghế gỗ cao cấp",
+    "HanSD": "2033-02-15",
+    "CongTySX": "Đà Lạt Wooden",
+    "NamSX": "2020-01-26",
+    "Gia": 15000000,
+    "Quantity": 20,
+    "LoaiHang": 4
+  }
+]

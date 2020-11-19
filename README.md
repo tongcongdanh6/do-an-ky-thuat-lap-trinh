@@ -18,3 +18,6 @@
 
 ## Update ngày 18/11/2020
 + Thêm Tìm Kiếm Loại Hàng theo Tên Loại Hàng và Mã Loại Hàng
+
+## Update ngày 20/11/2020
++ Thêm - Danh sách Hóa Đơn Bán Hàng
