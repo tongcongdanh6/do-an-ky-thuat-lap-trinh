@@ -33,7 +33,38 @@ namespace _1988216.MVC.Models
                     mh.CongTySX = jitem["CongTySX"];
                     mh.NamSX = jitem["NamSX"];
                     mh.Gia = jitem["Gia"];
-                    mh.Quantity = jitem["Quantity"];
+
+                    // Quantity Available Of Product will get from HoaDonNhapHangData - HoaDonBanHang
+                    M_HoaDonNhapHang m_HoaDonNhapHang = new M_HoaDonNhapHang();
+                    M_HoaDonBanHang m_HoaDonBanHang = new M_HoaDonBanHang();
+                    List<HoaDonNhapHang> listNhapHang = m_HoaDonNhapHang.getGoodsReceivedNote();
+                    List<HoaDonBanHang> listBanHang = m_HoaDonBanHang.getHoaDonBanHang();
+
+                    int totalQuantityOfAProduct = 0;
+                    // SO LUONG NHAP HANG (+)
+                    foreach (HoaDonNhapHang hd in listNhapHang)
+                    {
+                        if (hd.ProductList.Find(hdInList => hdInList.Id == mh.Id) != null)
+                        {
+                            totalQuantityOfAProduct += hd.ProductList.Find(hdInList => hdInList.Id == mh.Id).Quantity;
+                        }
+                    }
+
+                    // SO LUONG DA BAN (-)
+
+                    foreach (HoaDonBanHang hd in listBanHang)
+                    {
+                        if (hd.ProductSold.Find(hdInList => hdInList.Id == mh.Id) != null)
+                        {
+                            totalQuantityOfAProduct -= hd.ProductSold.Find(hdInList => hdInList.Id == mh.Id).Quantity;
+                        }
+                    }
+
+
+                    mh.Quantity = totalQuantityOfAProduct;
+
+
+
                     mh.LoaiHang = jitem["LoaiHang"];
 
                     // Thêm mặt hàng mới vào List

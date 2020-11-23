@@ -21,3 +21,9 @@
 
 ## Update ngày 20/11/2020
 + Thêm - Danh sách Hóa Đơn Bán Hàng
+
+## Update ngày 23/11/2020
++ Thêm - Tìm kiếm Bill Of Sale
++ Thêm - Danh sách Hóa Đơn Nhập Hàng
++ Điều chỉnh - Số lượng mặt hàng sẵn có dựa vào lượng Nhập Hàng và Bán Hàng
++ Thêm - Thống kê số lượng hàng còn lại trong kho

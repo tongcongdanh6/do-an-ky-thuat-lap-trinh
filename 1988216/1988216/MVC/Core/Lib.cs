@@ -28,5 +28,16 @@ namespace _1988216.MVC.Core
 
             return new DateTime(splitIntTime[2], splitIntTime[1], splitIntTime[0]);
         }
+
+        public string simplifyText(string text, int limitLen)
+        {
+            string resText = String.Empty;
+            if (text.Length > limitLen)
+                resText = text.Substring(0, limitLen) + " ...";
+            else
+                resText = text;
+
+            return resText;
+        }
     }
 }

@@ -3,7 +3,7 @@
 @using _1988216.MVC.Core;
 @{
     Layout = "~/MVC/Views/_Layout.cshtml";
-    Page.Title = "Danh sách mặt hàng";
+    Page.Title = "Danh sách số hàng còn lại theo thể loại";
 
     // Redirect if user read directly the file in the MVC Folder
     Lib lib = new Lib();
@@ -11,7 +11,7 @@
 
     if (!lib.isValidUrl())
     {
-        Response.Redirect("/?c=dsmathang");
+        Response.Redirect("/?c=dssohangtheotheloai");
     }
 
     C_MatHang c_MatHang = new C_MatHang();
@@ -19,32 +19,33 @@
     List<MatHang> listMatHang = c_MatHang.getAllProduct();
     List<LoaiHang> listLoaiHang = c_LoaiHang.getAllCategory();
 
+	listMatHang = c_MatHang.sortProductByCategory(listMatHang);
+
     string mess = String.Empty;
 
     if (IsPost)
     {
-        if (Request["act"] == "delete")
+@*        if (Request["act"] == "delete")
         {
             mess = "Xoa " + Request["idOfProductToDelete"];
             c_MatHang.deleteProduct(int.Parse(Request["idOfProductToDelete"]));
 
-            Response.Redirect("/?c=dsmathang");
-        }
+            Response.Redirect("/?c=dssohangtheotheloai");
+        }*@
 
-        if (Request["act"] == "timkiem")
+@*        if (Request["act"] == "timkiem")
         {
             listMatHang = c_MatHang.searchProduct(Request["searchType"], Request["keyword"]);
-        }
+        }*@
     }
 
-	@*IEnumerable<MatHang> list2 = listMatHang.Where(item => item.Id > 1);*@
 }
 
 <main>
 	<div class="container-fluid">
 		<!-- Section: Hoverable -->
 		<section>
-			<div class="card pl-5 py-2 mb-5">
+@*			<div class="card pl-5 py-2 mb-5">
 				<form class="form-inline" id="frm-search" method="post" action="/?c=dsmathang&act=timkiem">
 					<div class="md-form my-0">
 						<input class="form-control mr-sm-2" type="text" name="keyword" id="keyword" placeholder="Nhập từ khóa vào đây" aria-label="Search" required oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('Nhập từ khóa tìm kiếm')">
@@ -61,7 +62,7 @@
 					</div>
 				</form>
 				<div id="tip" class="text-success small-text"><b></b></div>
-			</div>
+			</div>*@
 
 			@{
                 if (Request["act"] == "timkiem")
@@ -73,7 +74,7 @@
 
 			<div class="card card-cascade">
 				<div class="view view-cascade gradient-card-header blue-gradient">
-					<h2 class="h2-responsive mb-0 font-weight-500">Danh sách mặt hàng</h2>
+					<h2 class="h2-responsive mb-0 font-weight-500">Danh sách số lượng hàng còn lại theo loại hàng</h2>
 				</div>
 				<div class="card-body">
 
@@ -82,62 +83,72 @@
 
 						<!-- Table head -->
 						<thead class="mdb-color darken-3">
-							<tr class="text-white">
-								<th>Mã hàng</th>
-								<th>Tên mặt hàng</th>
-								<th>Hạn sử dụng</th>
-								<th>Công ty SX</th>
-								<th>Năm SX</th>
-								<th>Giá bán (VNĐ)</th>
-								<th>Số lượng</th>
-								<th>Loại hàng</th>
-								<th>Thao tác</th>
-							</tr>
+                            <tr class="text-white">
+                                <th>Loại hàng</th>
+                                <th>Mã hàng</th>
+                                <th>Tên mặt hàng</th>
+                                <th>Hạn sử dụng</th>
+                                <th>Công ty SX</th>
+                                <th>Năm SX</th>
+                                <th>Giá bán (VNĐ)</th>
+                                <th>Số lượng</th>
+                                <th>Thao tác</th>
+                            </tr>
 						</thead>
 						<!-- Table head -->
 						<!-- Table body -->
 						<tbody>
 							@foreach (MatHang mh in listMatHang)
                             {
-								<tr>
-									<th scope="row">@mh.Id</th>
-									<td>@mh.TenMatHang</td>
-									<td>@DateTime.Parse(mh.HanSD).GetDateTimeFormats()[9]</td>
-									<td>@mh.CongTySX</td>
-									<td>@DateTime.Parse(mh.NamSX).GetDateTimeFormats()[9]</td>
-									<td>@String.Format("{0:n0}", mh.Gia)</td>
-									<td>@{
+                            <tr>
+                                <td>
+                                    @{
+                                        foreach (LoaiHang lh in listLoaiHang)
+                                        {
+                                            if (mh.LoaiHang == lh.Id)
+                                            {
+                                                if (mh.Quantity <= 0)
+                                                {
+                                                   <span style="color: red">@lh.TenLoaiHang</span>
+                                                }
+                                                else
+                                                {
+                                                    <span style="color: green">@lh.TenLoaiHang</span>
+                                                }
+                                                break;
+                                            }
+                                        }
+                                    }
+                                </td>
+                                <th scope="row">@mh.Id</th>
+                                <td>@mh.TenMatHang</td>
+                                <td>@DateTime.Parse(mh.HanSD).GetDateTimeFormats()[9]</td>
+                                <td>@mh.CongTySX</td>
+                                <td>@DateTime.Parse(mh.NamSX).GetDateTimeFormats()[9]</td>
+                                <td>@String.Format("{0:n0}", mh.Gia)</td>
+                                <td>
+                                    @{
                                         if (mh.Quantity <= 0)
                                         {
                                             <span class="alert alert-warning">Hết hàng trong kho</span>
                                         }
                                         else
                                         {
-											@mh.Quantity
+                                            @mh.Quantity
                                         }
-									}</td>
-									<td>
-										@{
-                                            foreach (LoaiHang lh in listLoaiHang)
-                                            {
-                                                if (mh.LoaiHang == lh.Id)
-                                                {
-													@lh.TenLoaiHang;
-                                                    break;
-                                                }
-                                            }
-										}
-									</td>
-									<td>
+                                }
+                            </td>
 
-										<a class="btn btn-indigo waves-effect waves-light" href="/?c=suamathang&productId=@mh.Id">Sửa</a>
+                            <td>
 
-										<button class="btn btn-secondary waves-effect waves-light"
-												data-toggle="modal" data-mhid=@mh.Id data-target="#confirmModal">
-											Xóa
-										</button>
-									</td>
-								</tr>
+                                <a class="btn btn-indigo waves-effect waves-light" href="/?c=suamathang&productId=@mh.Id">Sửa</a>
+
+                                <button class="btn btn-secondary waves-effect waves-light"
+                                        data-toggle="modal" data-mhid=@mh.Id data-target="#confirmModal">
+                                    Xóa
+                                </button>
+                            </td>
+                            </tr>
                                             }
 						</tbody>
 						<!-- Table body -->

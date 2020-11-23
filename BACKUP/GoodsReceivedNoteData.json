@@ -1,0 +1,22 @@
+﻿[
+  {
+    "id": 1,
+    "nameOfShipper": "Phạm Hồng Tú",
+    "personalID": "301405775",
+    "address": "Quận Thủ Đức, TP Hồ Chí Minh",
+    "phone": "0969345895",
+    "currency": "VNĐ",
+    "products_list": [
+      {
+        "id": 1,
+        "quantity": 3,
+        "unitCost": 28000
+      },
+      {
+        "id": 2,
+        "quantity": 10,
+        "unitCost": 50000
+      }
+    ]
+  }
+]

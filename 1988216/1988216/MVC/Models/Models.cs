@@ -41,6 +41,11 @@ namespace _1988216.MVC.Models
 
         public int Quantity { get; set; }
     }
+
+    public class ProductWithQuantityAndUnitCost : ProductWithQuantity
+    {
+        public int UnitCost { get; set; }
+    }
    
 
     public class HoaDonBanHang
@@ -60,6 +65,22 @@ namespace _1988216.MVC.Models
 
         public float TotalValueOfBill { get; set; }
         public float TotalOfQuantity { get; set; }
+    }
+
+    public class HoaDonNhapHang
+    {
+        public int Id { get; set; }
+        public string ShipperName { get; set; }
+        public string PersonalID { get; set; }
+        public string ShipperAddress { get; set; }
+        public string ShipperPhone { get; set; }
+        public string Currency { get; set; }
+        public int Shipfee { get; set; }
+        public List<ProductWithQuantityAndUnitCost> ProductList { get; set; }
+
+        public int TotalValueOfGoodsReceivedNote { get; set; }
+        public int TotalQuantityOfProduct { get; set; }
+
     }
 
     public class Models

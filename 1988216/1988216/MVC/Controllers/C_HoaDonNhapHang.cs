@@ -7,49 +7,45 @@ using _1988216.MVC.Core;
 
 namespace _1988216.MVC.Controllers
 {
-    public class C_HoaDonBanHang
+    public class C_HoaDonNhapHang
     {
         private Lib lib;
-        private M_HoaDonBanHang m_HoaDonBanHang;
+        private M_HoaDonNhapHang m_HoaDonNhapHang;
         private M_MatHang m_MatHang;
 
-        public C_HoaDonBanHang()
+        public C_HoaDonNhapHang()
         {
-            m_HoaDonBanHang = new M_HoaDonBanHang();
+            m_HoaDonNhapHang = new M_HoaDonNhapHang();
             m_MatHang = new M_MatHang();
             lib = new Lib();
         }
 
-        public List<HoaDonBanHang> getHoaDonBanHang()
+        public List<HoaDonNhapHang> getGoodsReceivedNote()
         {
-            // Calculate Total Value Of Bill
-            List<HoaDonBanHang> list = m_HoaDonBanHang.getHoaDonBanHang();
+            List<HoaDonNhapHang> list = m_HoaDonNhapHang.getGoodsReceivedNote();
             List<MatHang> listMh = m_MatHang.getMatHang();
-            List<HoaDonBanHang> res = new List<HoaDonBanHang>();
+            List<HoaDonNhapHang> res = new List<HoaDonNhapHang>();
 
-            foreach(HoaDonBanHang hd in list)
+            foreach(HoaDonNhapHang hd in list)
             {
-                float sumOfValue = 0;
+                int sumOfValue = 0;
                 int sumOfQuantity = 0;
-                foreach (ProductWithQuantity item in hd.ProductSold)
+                foreach (ProductWithQuantityAndUnitCost item in hd.ProductList)
                 {
-                    int prodPrice = listMh.Find(mh => mh.Id == item.Id).Gia;
-                    sumOfValue += prodPrice*item.Quantity;
+                    sumOfValue += item.UnitCost*item.Quantity;
 
                     sumOfQuantity += item.Quantity;
                 }
 
-                sumOfValue += sumOfValue * hd.VatTax;
-                sumOfValue += hd.Shipfee;
-                hd.TotalValueOfBill = sumOfValue;
+                hd.TotalValueOfGoodsReceivedNote = sumOfValue + hd.Shipfee;
 
-                hd.TotalOfQuantity = sumOfQuantity;
+                hd.TotalQuantityOfProduct = sumOfQuantity;
 
 
 
                 // Display Shorter Address of Billing by ... if length of string > 50 character
 
-                hd.BillingAddress = lib.simplifyText(hd.BillingAddress, 50);
+                hd.ShipperAddress = lib.simplifyText(hd.ShipperAddress, 50);
 
                 res.Add(hd);
             }
@@ -60,7 +56,7 @@ namespace _1988216.MVC.Controllers
 
 
 
-        public List<HoaDonBanHang> searchBillOfSale(string searchType, string keyword)
+        /*public List<HoaDonBanHang> searchBillOfSale(string searchType, string keyword)
         {
             try
             {
@@ -114,6 +110,6 @@ namespace _1988216.MVC.Controllers
             {
                 return new List<HoaDonBanHang>();
             }
-        }
+        }*/
     }
 }

@@ -3,7 +3,7 @@
 @using _1988216.MVC.Core;
 @{
     Layout = "~/MVC/Views/_Layout.cshtml";
-    Page.Title = "Danh sách hóa đơn bán hàng";
+    Page.Title = "Danh sách hóa đơn nhập hàng";
 
     // Redirect if user read directly the file in the MVC Folder
     Lib lib = new Lib();
@@ -14,8 +14,8 @@
         Response.Redirect("/?c=dshoadonbanhang");
     }
 
-    C_HoaDonBanHang c_HoaDonBanHang = new C_HoaDonBanHang();
-    List<HoaDonBanHang> listHoaDonBanHang = c_HoaDonBanHang.getHoaDonBanHang();
+    C_HoaDonNhapHang c_HoaDonNhapHang = new C_HoaDonNhapHang();
+    List<HoaDonNhapHang> listGoodsReceivedNote = c_HoaDonNhapHang.getGoodsReceivedNote();
 
     string mess = String.Empty;
 
@@ -29,10 +29,10 @@
                 Response.Redirect("/?c=dsmathang");
             }*@
 
-    if (Request["act"] == "timkiem")
+@*    if (Request["act"] == "timkiem")
     {
         listHoaDonBanHang = c_HoaDonBanHang.searchBillOfSale(Request["searchType"], Request["keyword"]);
-    }
+    }*@
 }
 
     @*IEnumerable<MatHang> list2 = listMatHang.Where(item => item.Id > 1);*@
@@ -48,9 +48,11 @@
                         <input class="form-control mr-sm-2" type="text" name="keyword" id="keyword" placeholder="Nhập từ khóa vào đây" aria-label="Search" required oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('Nhập từ khóa tìm kiếm')">
                         <b>Tìm kiếm theo: </b>
                         <select class="browser-default custom-select" name="searchType" id="searchType" style="display: inline!important; font-family: inherit">
-                            <option value="stype_maHoaDonBanHang">Mã hóa đơn bán hàng</option>
-                            <option value="stype_customerName">Tên khách hàng</option>
-                            <option value="stype_paymentMethod">Hình thức thanh toán</option>
+                            <option value="stype_maHoaDonBanHang">Mã hóa đơn nhập hàng</option>
+                            <option value="stype_customerName">Tên người giao hàng</option>
+                            <option value="stype_customerName">Địa chỉ người giao hàng</option>
+                            <option value="stype_paymentMethod">Số chứng minh thư</option>
+                            <option value="stype_paymentMethod">Số điện thoại người giao</option>
                         </select>
                         <button class="btn btn-outline-black btn-sm" id="dark-mode">Tìm kiếm</button>
                     </div>
@@ -61,18 +63,18 @@
             @{
                 if (Request["act"] == "timkiem")
                 {
-                    <a href="/?c=dshoadonbanhang" class="btn btn-secondary waves-effect waves-light">Load lại đầy đủ dữ liệu</a>
+                    <a href="/?c=dshoadonnhaphang" class="btn btn-secondary waves-effect waves-light">Load lại đầy đủ dữ liệu</a>
                 }
             }
 
 
             <div class="card card-cascade">
                 <div class="view view-cascade gradient-card-header blue-gradient">
-                    <h2 class="h2-responsive mb-0 font-weight-500">Danh sách hóa đơn bán hàng</h2>
+                    <h2 class="h2-responsive mb-0 font-weight-500">Danh sách hóa đơn nhập hàng</h2>
                 </div>
                 <div class="card-body">
                     <div class="text-primary">
-                        Có thể click vào <b>Tên khách hàng</b> để xem chi tiết hóa đơn.
+                        Có thể click vào <b>Tên người giao hàng</b> để xem chi tiết hóa đơn.
                     </div>
                     <!-- Table -->
                     <table class="table table-hover" id="tableMatHang">
@@ -81,32 +83,29 @@
                         <thead class="mdb-color darken-3">
                             <tr class="text-white">
                                 <th>Mã hóa đơn</th>
-                                <th>Tên khách hàng</th>
-                                <th>Địa chỉ giao hàng</th>
-                                <th>Số điện thoại</th>
-                                <th>Hình thức thanh toán</th>
-                                <th>Tổng bill</th>
+                                <th>Tên người giao hàng</th>
+                                <th>Địa chỉ người giao hàng</th>
+                                <th>Số điện thoại người giao</th>
+                                <th>Tổng giá trị phải trả</th>
                                 <th>Số lượng hàng mua</th>
-                                <th>Phí ship</th>
+                                <th>Phí vận chuyển</th>
                                 <th>Thao tác</th>
                             </tr>
                         </thead>
                         <!-- Table head -->
                         <!-- Table body -->
                         <tbody>
-                            @foreach (HoaDonBanHang hd in listHoaDonBanHang)
+                            @foreach (HoaDonNhapHang hd in listGoodsReceivedNote)
                             {
                                 <tr>
                                     <th scope="row">@hd.Id</th>
-                                    <td><a href="/?c=chitiethoadonbanhang&hdId=@hd.Id" data-toggle="tooltip" title="Click vào để xem chi tiết hóa đơn của khách hàng @hd.CustomerName">@hd.CustomerName</a></td>
-                                    <td>@hd.BillingAddress</td>
-                                    <td>@hd.Phone</td>
-                                    <td style="display:flex; justify-content: center;"><img src="~/public/img/@Html.Raw(hd.PaymentMethod+".png")" height="30" /></td>
-                                    <td>@String.Format("{0:n0}", hd.TotalValueOfBill) @hd.Currency</td>
-                                    <td>@hd.TotalOfQuantity</td>
+                                    <td><a href="/?c=chitiethoadonnhaphang&hdId=@hd.Id" data-toggle="tooltip" title="Click vào để xem chi tiết hóa đơn từ người giao @hd.ShipperName">@hd.ShipperName</a></td>
+                                    <td>@hd.ShipperAddress</td>
+                                    <td>@hd.ShipperPhone</td>
+                                    <td>@String.Format("{0:n0}", hd.TotalValueOfGoodsReceivedNote) @hd.Currency</td>
+                                    <td>@hd.TotalQuantityOfProduct</td>
                                     <td>@String.Format("{0:n0}", hd.Shipfee) @hd.Currency</td>
                                     <td>
-
                                         <a class="btn btn-indigo waves-effect waves-light" href="/?c=suahoadonbanhang&hoadonId=@hd.Id">Sửa</a>
 
                                         <button class="btn btn-secondary waves-effect waves-light"
@@ -125,13 +124,13 @@
 
                         if (Request["act"] == "timkiem")
                         {
-                            if (listHoaDonBanHang.Count == 0)
+                            if (listGoodsReceivedNote.Count == 0)
                             {
                                 <div>Không tìm thấy kết quả ứng với từ khóa:  <b>@Request["keyword"]</b></div>
                             }
                             else
                             {
-                                <div>Tìm thấy <b>@listHoaDonBanHang.Count hóa đơn bán hàng</b> khớp từ khóa <b>@Request["keyword"]</b></div>
+                                <div>Tìm thấy <b>@listGoodsReceivedNote.Count hóa đơn nhập hàng</b> khớp từ khóa <b>@Request["keyword"]</b></div>
                             }
                         }
                     }
@@ -146,7 +145,7 @@
             <div class="modal-dialog modal-notify modal-danger" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <p class="heading">Xác nhận việc xóa hóa đơn bán hàng</p>
+                        <p class="heading">Xác nhận việc xóa hóa đơn nhập hàng</p>
 
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true" class="white-text">×</span>
@@ -162,13 +161,13 @@
 
                             <div class="col-9">
                                 <p>
-                                    Việc thực hiện thao tác XÓA MẶT HÀNG làm cho dữ liệu vĩnh viễn mất đi và có thể không khôi phục lại được? Bạn có thực sự muốn XÓA MẶT HÀNG mang MÃ MẶT HÀNG bên dưới?
+                                    Việc thực hiện thao tác XÓA HÓA ĐƠN NHẬP HÀNG làm cho dữ liệu vĩnh viễn mất đi và có thể không khôi phục lại được? Bạn có thực sự muốn XÓA HÓA ĐƠN mang MÃ HÓA ĐƠN bên dưới?
                                 </p>
-                                <h2><span class="badge" id="confirmModal-idmh">Mã hóa đơn bán hàng: </span></h2>
+                                <h2><span class="badge" id="confirmModal-idmh">Mã hóa đơn nhập hàng: </span></h2>
                             </div>
                         </div>
                     </div>
-                    <form action="/?c=dshoadonbanhang&act=delete" id="frmConfirm" method="post">
+                    <form action="/?c=dshoadonnhaphang&act=delete" id="frmConfirm" method="post">
                         <input type="hidden" name="idOfProductToDelete" id="idOfProductToDelete" value="" />
                         <div class="modal-footer justify-content-center">
                             <button type="submit" class="btn btn-danger px-3 waves-effect waves-light" id="deleteBtn">XÓA</i></button>
@@ -193,7 +192,7 @@
 
     $("#tableMatHang .btn").on("click", function () {
         let id = $(this).data("mhid");
-        $("#confirmModal-idmh").html("Mã hóa đơn bán hàng hàng: " + id);
+        $("#confirmModal-idmh").html("Mã hóa đơn nhập hàng: " + id);
         $("#idOfProductToDelete").val(id);
     });
 

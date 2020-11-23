@@ -14,11 +14,11 @@
     "products_sold": [
       {
         "id": 1,
-        "quantity": 1
+        "quantity": 0
       },
       {
         "id": 2,
-        "quantity": 2
+        "quantity": 0
       }
     ]
   },
@@ -37,7 +37,11 @@
     "products_sold": [
       {
         "id": 3,
-        "quantity": 3
+        "quantity": 0
+      },
+      {
+        "id": 4,
+        "quantity": 0
       }
     ]
   }

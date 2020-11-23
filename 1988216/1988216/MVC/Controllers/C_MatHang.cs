@@ -193,5 +193,20 @@ namespace _1988216.MVC.Controllers
             }
         }
 
+        public List<MatHang> sortProductByCategory(List<MatHang> listProduct)
+        {
+            List<LoaiHang> listCategory = m_LoaiHang.getLoaiHang();
+
+            List<MatHang> res = new List<MatHang>();
+
+            foreach(LoaiHang lh in listCategory)
+            {
+                List<MatHang> tmp = listProduct.FindAll(p => p.LoaiHang == lh.Id);
+                res.AddRange(tmp);
+            }
+
+            return res;
+        }
+
     }
 }
