@@ -54,16 +54,22 @@ namespace _1988216.MVC.Models
 
                     foreach (HoaDonBanHang hd in listBanHang)
                     {
-                        if (hd.ProductSold.Find(hdInList => hdInList.Id == mh.Id) != null)
+                        foreach(ProductWithQuantity p in hd.ProductSold)
                         {
-                            totalQuantityOfAProduct -= hd.ProductSold.Find(hdInList => hdInList.Id == mh.Id).Quantity;
+                            if(p.Id == mh.Id)
+                            {
+                                totalQuantityOfAProduct -= p.Quantity;
+                            }
                         }
+
+/*                        if (hd.ProductSold.Where(hdInList => hdInList.Id == mh.Id) != null)
+                        {
+                            totalQuantityOfAProduct -= hd.ProductSold.Where(hdInList => hdInList.Id == mh.Id).Quantity;
+                        }*/
                     }
 
 
                     mh.Quantity = totalQuantityOfAProduct;
-
-
 
                     mh.LoaiHang = jitem["LoaiHang"];
 

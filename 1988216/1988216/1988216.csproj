@@ -132,6 +132,7 @@
     <Content Include="MVC\Models\HoaDonNhapHangData.json" />
     <Content Include="MVC\Views\pages\dshoadonnhaphang.cshtml" />
     <Content Include="MVC\Views\pages\dssohangtheotheloai.cshtml" />
+    <Content Include="MVC\Views\pages\themhoadonbanhang.cshtml" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

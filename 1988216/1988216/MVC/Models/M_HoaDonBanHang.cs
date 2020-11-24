@@ -23,35 +23,100 @@ namespace _1988216.MVC.Models
                     HoaDonBanHang hdbh = new HoaDonBanHang();
 
                     // Convert từ Json sang Object MatHang
-                    hdbh.Id = jitem["id"];
-                    hdbh.CustomerName = jitem["customerName"];
-                    hdbh.Dob = jitem["dob"];
-                    hdbh.Address = jitem["address"];
-                    hdbh.Phone = jitem["phone"];
-                    hdbh.BillingAddress = jitem["billing_address"];
-                    hdbh.PaymentMethod = jitem["payment_method"];
-                    hdbh.Shipfee = jitem["shipfee"];
-                    hdbh.Currency = jitem["currency"];
-                    hdbh.ExchangeRate = jitem["exchange_rate"];
-                    hdbh.VatTax = jitem["vat_tax"];
+                    hdbh.Id = jitem["Id"];
+                    hdbh.CustomerName = jitem["CustomerName"];
+                    hdbh.Dob = jitem["Dob"];
+                    hdbh.Address = jitem["Address"];
+                    hdbh.Phone = jitem["Phone"];
+                    hdbh.BillingAddress = jitem["BillingAddress"];
+                    hdbh.PaymentMethod = jitem["PaymentMethod"];
+                    hdbh.Shipfee = jitem["Shipfee"];
+                    hdbh.Currency = jitem["Currency"];
+                    hdbh.ExchangeRate = jitem["ExchangeRate"];
+                    hdbh.VatTax = jitem["VatTax"];
 
-                    List<ProductWithQuantity> productSold = new List<ProductWithQuantity>();
-
-                    foreach(var item in jitem["products_sold"])
+                    // Count Product
+                    int counter = 0;
+                    foreach (var item in jitem["ProductSold"])
                     {
-                        ProductWithQuantity pwt = new ProductWithQuantity();
-                        pwt.Id = item["id"];
-                        pwt.Quantity = item["quantity"];
-
-                        productSold.Add(pwt);
+                        counter++;
                     }
 
-                    hdbh.ProductSold = productSold;
+                    ProductWithQuantity[] productSoldList = new ProductWithQuantity[counter];
+
+                    int i = 0;
+                    foreach (var item in jitem["ProductSold"])
+                    {
+                        ProductWithQuantity pwt = new ProductWithQuantity();
+                        pwt.Id = item["Id"];
+                        pwt.Quantity = item["Quantity"];
+
+                        productSoldList[i] = pwt;
+                        i++;
+                    }
+
+                    hdbh.ProductSold = productSoldList;
 
                     // Thêm mặt hàng mới vào List
                     listHoaDonBanHang.Add(hdbh);
                 }
                 return listHoaDonBanHang;
+            }
+        }
+
+        public bool addNewBillOfSale(string customerName, string dob, string address, string billingAdress, string phone, string paymentMethod, int shipfee, List<ProductWithQuantity> listProductSold)
+        {
+            List<HoaDonBanHang> listBill = this.getHoaDonBanHang();
+            int maxId = listBill.ElementAt(0).Id;
+
+            // Find MAX VALUE OF ID
+            foreach (HoaDonBanHang hd in listBill)
+            {
+                if (hd.Id > maxId)
+                {
+                    maxId = hd.Id;
+                }
+            }
+
+            // Id of new bill
+            int newId = maxId + 1;
+
+
+            // Create new Bill
+            HoaDonBanHang newHd = new HoaDonBanHang();
+            newHd.Id = newId;
+            newHd.CustomerName = customerName;
+            newHd.Dob = dob;
+            newHd.Address = address;
+            newHd.Phone = phone;
+            newHd.BillingAddress = billingAdress;
+            newHd.PaymentMethod = paymentMethod;
+            newHd.Shipfee = shipfee;
+            newHd.Currency = "VNĐ";
+            newHd.ExchangeRate = 1;
+            newHd.VatTax = 0.1f;
+            newHd.ProductSold = listProductSold.ToArray();
+
+            // Add new item to listBill
+            listBill.Add(newHd);
+
+
+            // Convert list to Array and Convert to JSON
+            string json = JsonConvert.SerializeObject(listBill.ToArray());
+
+            // Write to file
+            try
+            {
+                string filePath = HttpContext.Current.Server.MapPath("~/MVC/Models/HoaDonBanHangData.json");
+
+                StreamWriter file = new StreamWriter(filePath);
+                file.WriteLine(json);
+                file.Close();
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
     }

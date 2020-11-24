@@ -200,23 +200,12 @@
 
     $(document).ready(function () {
         $(`#searchType option[value="${document.cookie}"]`).prop("selected", true);
-        if (document.cookie == "stype_hanSD" || document.cookir == "stype_namSX") {
-            $("#tip").html("Nhập <b>>=dd/mm/yyyy</b> để tìm mặt hàng SAU ngày này.<br>Nhập <b><=dd/mm/yyyy</b> để tìm mặt hàng TRƯỚC ngày này.<br>Nhập <b>==dd/mm/yyyy</b> để tìm mặt hàng ĐÚNG ngày này.");
-        }
     });
 
     $("#searchType").on("change", function () {
 
         document.cookie = this.value;
-
-
-
         switch (this.value) {
-            case "stype_hanSD":
-            case "stype_namSX":
-                $("#keyword").prop("placeholder", "mm/dd/yyyy");
-                $("#tip").html("Nhập <b>>=mm/dd/yyyy</b> để tìm mặt hàng SAU ngày này.<br>Nhập <b><=mm/dd/yyyy</b> để tìm mặt hàng TRƯỚC ngày này.<br>Nhập <b>==mm/dd/yyyy</b> để tìm mặt hàng ĐÚNG ngày này.");
-                break;
             default:
                 $("#keyword").prop("placeholder", "Nhập từ khóa vào đây");
                 $("#tip").html("");

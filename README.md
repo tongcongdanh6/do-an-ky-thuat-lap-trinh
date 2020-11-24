@@ -27,3 +27,6 @@
 + Thêm - Danh sách Hóa Đơn Nhập Hàng
 + Điều chỉnh - Số lượng mặt hàng sẵn có dựa vào lượng Nhập Hàng và Bán Hàng
 + Thêm - Thống kê số lượng hàng còn lại trong kho
+
+## Update ngày 25/11/2020
++ Thêm - Thêm mới Hóa Đơn Bán Hàng

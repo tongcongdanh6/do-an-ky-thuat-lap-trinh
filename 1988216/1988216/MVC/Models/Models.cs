@@ -61,7 +61,7 @@ namespace _1988216.MVC.Models
         public string Currency  { get; set; }
         public int ExchangeRate  { get; set; }
         public float VatTax  { get; set; }
-        public List<ProductWithQuantity> ProductSold { get; set; }
+        public ProductWithQuantity[] ProductSold { get; set; }
 
         public float TotalValueOfBill { get; set; }
         public float TotalOfQuantity { get; set; }

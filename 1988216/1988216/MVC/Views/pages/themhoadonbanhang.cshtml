@@ -1,0 +1,219 @@
+﻿@using _1988216.MVC.Models;
+@using _1988216.MVC.Controllers;
+@using _1988216.MVC.Core;
+
+@{
+    Layout = Layout = "~/MVC/Views/_Layout.cshtml";
+    Page.Title = "Thêm hóa đơn bán hàng";
+
+    // Redirect if user read directly the file in the MVC Folder
+    Lib lib = new Lib();
+    if (!lib.isValidUrl())
+    {
+        Response.Redirect("/?c=themhoadonbanhang");
+    }
+
+    C_MatHang c_MatHang = new C_MatHang();
+    C_LoaiHang c_LoaiHang = new C_LoaiHang();
+    C_HoaDonBanHang c_HoaDonBanHang = new C_HoaDonBanHang();
+
+    List<LoaiHang> listLoaiHang = c_LoaiHang.getAllCategory();
+    List<MatHang> listProduct = c_MatHang.getAllProduct();
+
+
+    string mess = String.Empty;
+    if (IsPost)
+    {
+        List<ProductWithQuantity> listProductSold = new List<ProductWithQuantity>();
+        foreach(string key in Request.Form.AllKeys)
+        {
+            if(key.Contains("productId"))
+            {
+                ProductWithQuantity p = new ProductWithQuantity();
+                p.Id = int.Parse(Request[key]);
+                string keyAmount = "amount" + key.Replace("productId", "");
+                p.Quantity = int.Parse(Request[keyAmount]);
+                listProductSold.Add(p);
+            }
+        }
+
+        if(c_HoaDonBanHang.addNewBillOfSale(Request["customerName"], Request["dob"], Request["address"], Request["billingAddress"], Request["phone"], Request["paymentMethod"], int.Parse(Request["shipfee"]), listProductSold))
+        {
+            Response.Redirect("/?c=dshoadonbanhang");
+        }
+        else
+        {
+
+        }
+    }
+}
+
+
+<main>
+	<div class="container-fluid">
+		@mess
+		<form method="post" action="/?c=themhoadonbanhang">
+			<!-- Section: Inputs -->
+			<section class="section card card-cascade mb-5">
+				<div class="view view-cascade gradient-card-header blue-gradient">
+					<h2 class="h2-responsive mb-0 font-weight-500">Thêm hóa đơn bán hàng mới</h2>
+				</div>
+
+                <div class="card-body">
+
+                    <h5></h5>
+
+                    <!-- Grid row -->
+                    <div class="row">
+
+
+                        <div class="col-md-6 mb-1">
+
+                            <div class="md-form md-outline">
+                                <input type="text" id="customerName" name="customerName" class="form-control">
+                                <label for="customerName" class="">Tên khách hàng</label>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6 mb-1">
+
+                            <div class="md-form md-outline">
+                                <input type="date" id="dob" name="dob" class="form-control">
+                                <label class="active" for="dob">Ngày tháng năm sinh</label>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-1">
+
+                            <div class="md-form md-outline">
+                                <input type="text" id="address" name="address" class="form-control">
+                                <label for="address" class="">Địa chỉ</label>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6 mb-1">
+
+                            <div class="md-form md-outline">
+                                <input type="text" id="billingAddress" name="billingAddress" class="form-control">
+                                <label for="billingAddress" class="">Địa chỉ giao hàng</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-1">
+
+                            <div class="md-form md-outline">
+                                <input type="number" id="phone" name="phone" class="form-control">
+                                <label for="phone" class="">Số điện thoại</label>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6 mb-1">
+
+                            <select class="mdb-select md-form" id="paymentMethod" name="paymentMethod" searchable="Tìm kiếm hình thức thanh toán tại đây..">
+                                <option value="" disabled selected>Chọn hình thức thanh toán</option>
+                                <option value="visa">Visa</option>
+                                <option value="mastercard">Master Card</option>
+                                <option value="atm">ATM Nội địa</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <!-- Grid column -->
+                        <div class="col-md-6 mb-1">
+
+                            <div class="md-form md-outline">
+                                <input type="number" id="shipfee" name="shipfee" class="form-control">
+                                <label class="active" for="shipfee">Phí giao hàng</label>
+                            </div>
+
+                        </div>
+                        <!-- Grid column -->
+                        <!-- Grid column -->
+
+                    </div>
+                    <!-- Grid row -->
+
+                    <div class="container-fluid p-0 m-0" id="listProductSold">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <select class="mdb-select md-form" id="productId_1" name="productId_1" searchable="Tìm kiếm mặt hàng tại đây..">
+                                    <option value="" disabled selected>Chọn mặt hàng</option>
+                                    @{
+                                        foreach (MatHang mh in listProduct)
+                                        {
+                                            <option value="@mh.Id">@mh.TenMatHang</option>
+                                        }
+                                    }
+
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-1">
+                                <div class="md-form md-outline">
+                                    <input type="number" id="amount_1" name="amount_1" class="form-control">
+                                    <label class="active" for="amount_1">Số lượng</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <button type="button" id="addMoreProductBtn"  class="btn btn-info waves-effect waves-light">Ấn vào đây để thêm mặt hàng cần thêm</button>
+
+
+                    <div class="row text-center">
+                        <div class="col">
+                            <button type="submit" class="btn btn-indigo waves-effect waves-light">Thêm hóa đơn bán hàng</button>
+                        </div>
+                    </div>
+                </div>
+
+			</section>
+		</form>
+		<!-- Section: Inputs -->
+	</div>
+
+    <script>
+        // Material Select Initialization
+        $(document).ready(function () {
+            $("#customerName").focus();
+
+            $("#addMoreProductBtn").on("click", function () {
+                let currentAmout = $($("#listProductSold .row")).length;
+
+                let html = `<div class="row">
+                            <div class="col-md-6">
+                                <select class="mdb-select md-form" id="productId_${currentAmout + 1}" name="productId_${currentAmout + 1}" searchable="Tìm kiếm mặt hàng tại đây..">
+                                    <option value="" disabled selected>Chọn mặt hàng</option>
+                                    @{
+                                        foreach (MatHang mh in listProduct)
+                                        {
+                                            <option value="@mh.Id">@mh.TenMatHang</option>
+                                        }
+                                    }
+
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-1">
+                                <div class="md-form md-outline">
+                                    <input type="number" id="amount_${currentAmout + 1}" name="amount_${currentAmout + 1}" class="form-control">
+                                    <label class="active" for="amount_${currentAmout + 1}">Số lượng</label>
+                                </div>
+                            </div>
+                        </div>`;
+
+                $("#listProductSold").append(html);
+                $(`#productId_${currentAmout + 1}`).materialSelect();
+            });
+        });
+    </script>
+</main>

@@ -20,42 +20,47 @@ namespace _1988216.MVC.Controllers
             lib = new Lib();
         }
 
-        public List<HoaDonBanHang> getHoaDonBanHang()
+        private void calculateTotalBillAndQuantity(ref List<HoaDonBanHang> list)
         {
-            // Calculate Total Value Of Bill
-            List<HoaDonBanHang> list = m_HoaDonBanHang.getHoaDonBanHang();
             List<MatHang> listMh = m_MatHang.getMatHang();
-            List<HoaDonBanHang> res = new List<HoaDonBanHang>();
-
-            foreach(HoaDonBanHang hd in list)
+            foreach (HoaDonBanHang hd in list)
             {
                 float sumOfValue = 0;
                 int sumOfQuantity = 0;
                 foreach (ProductWithQuantity item in hd.ProductSold)
                 {
                     int prodPrice = listMh.Find(mh => mh.Id == item.Id).Gia;
-                    sumOfValue += prodPrice*item.Quantity;
+                    sumOfValue += prodPrice * item.Quantity;
 
                     sumOfQuantity += item.Quantity;
                 }
 
                 sumOfValue += sumOfValue * hd.VatTax;
                 sumOfValue += hd.Shipfee;
-                hd.TotalValueOfBill = sumOfValue;
 
-                hd.TotalOfQuantity = sumOfQuantity;
-
-
-
-                // Display Shorter Address of Billing by ... if length of string > 50 character
-
-                hd.BillingAddress = lib.simplifyText(hd.BillingAddress, 50);
-
-                res.Add(hd);
+                list.Find(x => x == hd).TotalValueOfBill = sumOfValue;
+                list.Find(x => x == hd).TotalOfQuantity = sumOfQuantity;
             }
+        }
 
+        private void simplyAddress(ref List<HoaDonBanHang> list)
+        {
+            foreach (HoaDonBanHang hd in list)
+            {
+                // Display Shorter Address ... if length of string > 50 character
+                list.Find(x => x == hd).BillingAddress = lib.simplifyText(hd.BillingAddress, 50);
+            }
+        }
 
-            return res;
+        public List<HoaDonBanHang> getHoaDonBanHang()
+        {
+            // Calculate Total Value Of Bill
+            List<HoaDonBanHang> list = m_HoaDonBanHang.getHoaDonBanHang();
+
+            calculateTotalBillAndQuantity(ref list);
+            simplyAddress(ref list);
+
+            return list;
         }
 
 
@@ -100,13 +105,9 @@ namespace _1988216.MVC.Controllers
                         break;
                 }
 
-                // Simply the Address Text
-
-                foreach(HoaDonBanHang hd in resultList)
-                {
-                    hd.BillingAddress = lib.simplifyText(hd.BillingAddress, 50);
-                }
-
+                // Calculate Total Value of Bill
+                calculateTotalBillAndQuantity(ref resultList);
+                simplyAddress(ref resultList);
 
                 return resultList;
             }
@@ -114,6 +115,17 @@ namespace _1988216.MVC.Controllers
             {
                 return new List<HoaDonBanHang>();
             }
+        }
+
+
+        public bool addNewBillOfSale(string customerName, string dob, string address, string billingAdress, string phone, string paymentMethod, int shipfee, List<ProductWithQuantity> listProductSold)
+        {
+            return m_HoaDonBanHang.addNewBillOfSale(customerName, dob, address, billingAdress, phone, paymentMethod, shipfee, listProductSold);
+        }
+
+        public void test()
+        {
+            return;
         }
     }
 }
