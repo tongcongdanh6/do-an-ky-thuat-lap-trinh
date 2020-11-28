@@ -1,1 +1,22 @@
-[{"Id":1,"TenLoaiHang":"Mỹ phẩm"},{"Id":3,"TenLoaiHang":"Điện tử"},{"Id":5,"TenLoaiHang":"Sức khỏe"},{"Id":4,"TenLoaiHang":"Nội thất"},{"Id":2,"TenLoaiHang":"Đồ dùng gia đình"}]
+[
+  {
+    "Id": 1,
+    "TenLoaiHang": "Mỹ phẩm"
+  },
+  {
+    "Id": 3,
+    "TenLoaiHang": "Điện tử"
+  },
+  {
+    "Id": 5,
+    "TenLoaiHang": "Sức khỏe"
+  },
+  {
+    "Id": 4,
+    "TenLoaiHang": "Nội thất"
+  },
+  {
+    "Id": 2,
+    "TenLoaiHang": "Đồ dùng gia đình"
+  }
+]

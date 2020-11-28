@@ -1,0 +1,44 @@
+﻿[
+  {
+    "id": 1,
+    "shipperName": "Phạm Hồng Tú",
+    "personalID": "301405775",
+    "shipperAddress": "150B Hoàng Hoa Thám, Quận Thủ Đức, TP Hồ Chí Minh",
+    "shipperPhone": "0969345895",
+    "currency": "VNĐ",
+    "shipfee": 200000,
+    "products_list": [
+      {
+        "id": 1,
+        "quantity": 3,
+        "unitCost": 28000
+      },
+      {
+        "id": 2,
+        "quantity": 10,
+        "unitCost": 50000
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "shipperName": "Phạm Hồng Tú",
+    "personalID": "301405775",
+    "shipperAddress": "150B Hoàng Hoa Thám, Quận Thủ Đức, TP Hồ Chí Minh",
+    "shipperPhone": "0969345895",
+    "currency": "VNĐ",
+    "shipfee": 150000,
+    "products_list": [
+      {
+        "id": 1,
+        "quantity": 4,
+        "unitCost": 28000
+      },
+      {
+        "id": 3,
+        "quantity": 10,
+        "unitCost": 50000
+      }
+    ]
+  }
+]

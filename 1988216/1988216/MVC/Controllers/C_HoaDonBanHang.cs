@@ -64,6 +64,33 @@ namespace _1988216.MVC.Controllers
         }
 
 
+        public HoaDonBanHang getBillOfSaleById(string billId)
+        {
+            try
+            {
+                List<HoaDonBanHang> list = m_HoaDonBanHang.getHoaDonBanHang();
+                HoaDonBanHang res = new HoaDonBanHang();
+                foreach (HoaDonBanHang hd in list)
+                {
+                    if (hd.Id == int.Parse(billId))
+                    {
+                        res = hd;
+                        break;
+                    }
+                }
+
+                res.Dob = DateTime.Parse(res.Dob).ToString("yyyy-MM-dd");
+
+                return res;
+            }
+            catch
+            {
+                return new HoaDonBanHang();
+            }
+
+        }
+
+
 
         public List<HoaDonBanHang> searchBillOfSale(string searchType, string keyword)
         {
@@ -121,11 +148,6 @@ namespace _1988216.MVC.Controllers
         public bool addNewBillOfSale(string customerName, string dob, string address, string billingAdress, string phone, string paymentMethod, int shipfee, List<ProductWithQuantity> listProductSold)
         {
             return m_HoaDonBanHang.addNewBillOfSale(customerName, dob, address, billingAdress, phone, paymentMethod, shipfee, listProductSold);
-        }
-
-        public void test()
-        {
-            return;
         }
     }
 }

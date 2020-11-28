@@ -4,14 +4,16 @@
 
 @{
     Layout = Layout = "~/MVC/Views/_Layout.cshtml";
-    Page.Title = "Thêm hóa đơn bán hàng";
+    Page.Title = "Sửa hóa đơn bán hàng";
 
     // Redirect if user read directly the file in the MVC Folder
     Lib lib = new Lib();
     if (!lib.isValidUrl())
     {
-        Response.Redirect("/?c=themhoadonbanhang");
+        Response.Redirect("/?c=suahoadonbanhang");
     }
+
+    string selected = "selected";
 
     C_MatHang c_MatHang = new C_MatHang();
     C_LoaiHang c_LoaiHang = new C_LoaiHang();
@@ -20,31 +22,33 @@
     List<LoaiHang> listLoaiHang = c_LoaiHang.getAllCategory();
     List<MatHang> listProduct = c_MatHang.getAllProduct();
 
+    HoaDonBanHang BillInfoOldToUpdate = c_HoaDonBanHang.getBillOfSaleById(Request["hoadonId"]);
+
 
     string mess = String.Empty;
     if (IsPost)
     {
-        List<ProductWithQuantity> listProductSold = new List<ProductWithQuantity>();
-        foreach(string key in Request.Form.AllKeys)
-        {
-            if(key.Contains("productId"))
-            {
-                ProductWithQuantity p = new ProductWithQuantity();
-                p.Id = int.Parse(Request[key]);
-                string keyAmount = "amount" + key.Replace("productId", "");
-                p.Quantity = int.Parse(Request[keyAmount]);
-                listProductSold.Add(p);
-            }
-        }
+        //List<ProductWithQuantity> listProductSold = new List<ProductWithQuantity>();
+        //foreach(string key in Request.Form.AllKeys)
+        //{
+        //    if(key.Contains("productId"))
+        //    {
+        //        ProductWithQuantity p = new ProductWithQuantity();
+        //        p.Id = int.Parse(Request[key]);
+        //        string keyAmount = "amount" + key.Replace("productId", "");
+        //        p.Quantity = int.Parse(Request[keyAmount]);
+        //        listProductSold.Add(p);
+        //    }
+        //}
 
-        if(c_HoaDonBanHang.addNewBillOfSale(Request["customerName"], Request["dob"], Request["address"], Request["billingAddress"], Request["phone"], Request["paymentMethod"], int.Parse(Request["shipfee"]), listProductSold))
-        {
-            Response.Redirect("/?c=dshoadonbanhang");
-        }
-        else
-        {
+        //if(c_HoaDonBanHang.addNewBillOfSale(Request["customerName"], Request["dob"], Request["address"], Request["billingAddress"], Request["phone"], Request["paymentMethod"], int.Parse(Request["shipfee"]), listProductSold))
+        //{
+        //    Response.Redirect("/?c=dshoadonbanhang");
+        //}
+        //else
+        //{
 
-        }
+        //}
     }
 }
 
@@ -52,11 +56,11 @@
 <main>
 	<div class="container-fluid">
 		@mess
-		<form method="post" action="/?c=themhoadonbanhang">
+		<form method="post" action="/?c=suahoadonbanhang">
 			<!-- Section: Inputs -->
 			<section class="section card card-cascade mb-5">
 				<div class="view view-cascade gradient-card-header blue-gradient">
-					<h2 class="h2-responsive mb-0 font-weight-500">Thêm hóa đơn bán hàng mới</h2>
+					<h2 class="h2-responsive mb-0 font-weight-500">Sửa thông tin hóa đơn bán hàng</h2>
 				</div>
 
                 <div class="card-body">
@@ -70,8 +74,8 @@
                         <div class="col-md-6 mb-1">
 
                             <div class="md-form md-outline">
-                                <input type="text" id="customerName" name="customerName" class="form-control">
-                                <label for="customerName" class="">Tên khách hàng</label>
+                                <input type="text" id="customerName" name="customerName" class="form-control" value="@BillInfoOldToUpdate.CustomerName">
+                                <label for="customerName" class="active">Tên khách hàng</label>
                             </div>
 
                         </div>
@@ -79,7 +83,7 @@
                         <div class="col-md-6 mb-1">
 
                             <div class="md-form md-outline">
-                                <input type="date" id="dob" name="dob" class="form-control">
+                                <input type="date" id="dob" name="dob" class="form-control" value="@BillInfoOldToUpdate.Dob">
                                 <label class="active" for="dob">Ngày tháng năm sinh</label>
                             </div>
 
@@ -90,8 +94,8 @@
                         <div class="col-md-6 mb-1">
 
                             <div class="md-form md-outline">
-                                <input type="text" id="address" name="address" class="form-control">
-                                <label for="address" class="">Địa chỉ</label>
+                                <input type="text" id="address" name="address" class="form-control" value="@BillInfoOldToUpdate.Address">
+                                <label for="address" class="active">Địa chỉ</label>
                             </div>
 
                         </div>
@@ -99,8 +103,8 @@
                         <div class="col-md-6 mb-1">
 
                             <div class="md-form md-outline">
-                                <input type="text" id="billingAddress" name="billingAddress" class="form-control">
-                                <label for="billingAddress" class="">Địa chỉ giao hàng</label>
+                                <input type="text" id="billingAddress" name="billingAddress" class="form-control" value="@BillInfoOldToUpdate.BillingAddress">
+                                <label for="billingAddress" class="active">Địa chỉ giao hàng</label>
                             </div>
                         </div>
                     </div>
@@ -109,8 +113,8 @@
                         <div class="col-md-6 mb-1">
 
                             <div class="md-form md-outline">
-                                <input type="number" id="phone" name="phone" class="form-control">
-                                <label for="phone" class="">Số điện thoại</label>
+                                <input type="number" id="phone" name="phone" class="form-control" value="@BillInfoOldToUpdate.Phone">
+                                <label for="phone" class="active">Số điện thoại</label>
                             </div>
 
                         </div>
@@ -118,10 +122,9 @@
                         <div class="col-md-6 mb-1">
 
                             <select class="mdb-select md-form" id="paymentMethod" name="paymentMethod" searchable="Tìm kiếm hình thức thanh toán tại đây..">
-                                <option value="" disabled selected>Chọn hình thức thanh toán</option>
-                                <option value="visa">Visa</option>
-                                <option value="mastercard">Master Card</option>
-                                <option value="atm">ATM Nội địa</option>
+                                <option value="visa" @{if (BillInfoOldToUpdate.PaymentMethod == "visa") {@selected; } }>Visa</option>
+                                <option value="mastercard" @{if (BillInfoOldToUpdate.PaymentMethod == "mastercard") {@selected; } }>Master Card</option>
+                                <option value="atm" @{if (BillInfoOldToUpdate.PaymentMethod == "atm") {@selected; } }>ATM Nội địa</option>
                             </select>
                         </div>
                     </div>
@@ -132,7 +135,7 @@
                         <div class="col-md-6 mb-1">
 
                             <div class="md-form md-outline">
-                                <input type="number" id="shipfee" name="shipfee" class="form-control">
+                                <input type="number" id="shipfee" name="shipfee" class="form-control" value=@BillInfoOldToUpdate.Shipfee>
                                 <label class="active" for="shipfee">Phí giao hàng</label>
                             </div>
 
@@ -144,26 +147,36 @@
                     <!-- Grid row -->
 
                     <div class="container-fluid p-0 m-0" id="listProductSold">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <select class="mdb-select md-form" id="productId_1" name="productId_1" searchable="Tìm kiếm mặt hàng tại đây..">
-                                    <option value="" disabled selected>Chọn mặt hàng</option>
-                                    @{
-                                        foreach (MatHang mh in listProduct)
-                                        {
-                                            <option value="@mh.Id">@mh.TenMatHang</option>
-                                        }
-                                    }
 
-                                </select>
-                            </div>
-                            <div class="col-md-6 mb-1">
-                                <div class="md-form md-outline">
-                                    <input type="number" id="amount_1" name="amount_1" class="form-control">
-                                    <label class="active" for="amount_1">Số lượng</label>
+                        @{
+                               int productCount = 1;
+                               foreach (ProductWithQuantity p in BillInfoOldToUpdate.ProductSold)
+                               {
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <select class="mdb-select md-form" id="productId_@productCount " name="productId_@productCount" searchable="Tìm kiếm mặt hàng tại đây..">
+                                            
+                                            @{
+                                                foreach (MatHang mh in listProduct)
+                                                {
+                                                    <option value="@mh.Id">@mh.TenMatHang</option>
+                                                }
+                                            }
+
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-1">
+                                        <div class="md-form md-outline">
+                                            <input type="number" id="amount_@productCount" name="amount_@productCount" class="form-control" value="@p.Quantity">
+                                            <label class="active" for="amount_@productCount">Số lượng</label>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
+
+                                productCount++;
+                             }
+                        }
+
                     </div>
 
 
@@ -172,7 +185,7 @@
 
                     <div class="row text-center">
                         <div class="col">
-                            <button type="submit" class="btn btn-indigo waves-effect waves-light">Sủa thông tin hóa đơn bán hàng</button>
+                            <button type="submit" class="btn btn-indigo waves-effect waves-light">Thêm hóa đơn bán hàng</button>
                         </div>
                     </div>
                 </div>
@@ -188,9 +201,9 @@
             $("#customerName").focus();
 
             $("#addMoreProductBtn").on("click", function () {
-                let currentAmout = $($("#listProductSold .row")).length;
+                            let currentAmout = $($("#listProductSold .row")).length;
 
-                let html = `<div class="row">
+                            let html = `<div class="row">
                             <div class="col-md-6">
                                 <select class="mdb-select md-form" id="productId_${currentAmout + 1}" name="productId_${currentAmout + 1}" searchable="Tìm kiếm mặt hàng tại đây..">
                                     <option value="" disabled selected>Chọn mặt hàng</option>
@@ -199,7 +212,7 @@
                                         {
                                             <option value="@mh.Id">@mh.TenMatHang</option>
                                         }
-                                    }
+                }
 
                                 </select>
                             </div>
