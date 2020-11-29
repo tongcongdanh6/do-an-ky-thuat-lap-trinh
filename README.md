@@ -33,3 +33,4 @@
 
 ## Update ngày 29/11/2020
 + Thêm - Sửa Hóa Đơn Bán Hàng
++ Thêm - Xóa Hóa Đơn Bán Hàng

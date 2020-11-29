@@ -191,5 +191,12 @@ namespace _1988216.MVC.Controllers
 
             return m_HoaDonBanHang.modifyBillOfSale(BillId, customerName, dob, address, billingAdress, phone, paymentMethod, shipfee, listProductSold);
         }
+
+
+
+        public bool deleteBillOfSale(int BillId)
+        {
+            return m_HoaDonBanHang.deleteBillOfSale(BillId);
+        }
     }
 }

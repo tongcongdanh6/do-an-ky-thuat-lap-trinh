@@ -21,21 +21,24 @@
 
     if (IsPost)
     {
-        @*		if (Request["act"] == "delete")
+        if (Request["act"] == "delete")
+        {
+            mess = "Xoa " + Request["idOfBillToDelete"];
+            if (c_HoaDonBanHang.deleteBillOfSale(int.Parse(Request["idOfBillToDelete"])))
             {
-                mess = "Xoa " + Request["idOfProductToDelete"];
-                c_MatHang.deleteProduct(int.Parse(Request["idOfProductToDelete"]));
+                Response.Redirect("/?c=dshoadonbanhang");
+            }
+            else
+            {
 
-                Response.Redirect("/?c=dsmathang");
-            }*@
+            }
+        }
 
-    if (Request["act"] == "timkiem")
-    {
-        listHoaDonBanHang = c_HoaDonBanHang.searchBillOfSale(Request["searchType"], Request["keyword"]);
+        if (Request["act"] == "timkiem")
+        {
+            listHoaDonBanHang = c_HoaDonBanHang.searchBillOfSale(Request["searchType"], Request["keyword"]);
+        }
     }
-}
-
-    @*IEnumerable<MatHang> list2 = listMatHang.Where(item => item.Id > 1);*@
 }
 
 <main>
@@ -162,16 +165,16 @@
 
                             <div class="col-9">
                                 <p>
-                                    Việc thực hiện thao tác XÓA MẶT HÀNG làm cho dữ liệu vĩnh viễn mất đi và có thể không khôi phục lại được? Bạn có thực sự muốn XÓA MẶT HÀNG mang MÃ MẶT HÀNG bên dưới?
+                                    Thao tác XÓA HÓA ĐƠN BÁN HÀNG làm dữ liệu mất đi vĩnh viễn, không khôi phục lại được? Bạn có thực sự muốn XÓA HÓA ĐƠN BÁN HÀNG mang MÃ HÓA ĐƠN bên dưới?
                                 </p>
                                 <h2><span class="badge" id="confirmModal-idmh">Mã hóa đơn bán hàng: </span></h2>
                             </div>
                         </div>
                     </div>
                     <form action="/?c=dshoadonbanhang&act=delete" id="frmConfirm" method="post">
-                        <input type="hidden" name="idOfProductToDelete" id="idOfProductToDelete" value="" />
+                        <input type="hidden" name="idOfBillToDelete" id="idOfBillToDelete" value="" />
                         <div class="modal-footer justify-content-center">
-                            <button type="submit" class="btn btn-danger px-3 waves-effect waves-light" id="deleteBtn">XÓA</i></button>
+                            <button type="submit" class="btn btn-danger px-3 waves-effect waves-light" id="deleteBtn">XÓA</button>
                             <a class="btn btn-outline-danger waves-effect px-3" data-dismiss="modal">Hủy thao tác</a>
                         </div>
                     </form>
@@ -193,8 +196,8 @@
 
     $("#tableMatHang .btn").on("click", function () {
         let id = $(this).data("mhid");
-        $("#confirmModal-idmh").html("Mã hóa đơn bán hàng hàng: " + id);
-        $("#idOfProductToDelete").val(id);
+        $("#confirmModal-idmh").html("Mã hóa đơn bán hàng hàng: " + id); // Modify Here
+        $("#idOfBillToDelete").val(id); // Modify Here
     });
 
 

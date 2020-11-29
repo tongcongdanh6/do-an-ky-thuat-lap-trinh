@@ -164,5 +164,29 @@ namespace _1988216.MVC.Models
                 return false;
             }
         }
+
+        public bool deleteBillOfSale(int BillId)
+        {
+            List<HoaDonBanHang> listBill = getHoaDonBanHang();
+            listBill.Remove(listBill.Find(b => b.Id == BillId));
+
+            // Convert list to Array and Convert to JSON
+            string json = JsonConvert.SerializeObject(listBill.ToArray());
+
+            // Write to file
+            try
+            {
+                string filePath = HttpContext.Current.Server.MapPath("~/MVC/Models/HoaDonBanHangData.json");
+
+                StreamWriter file = new StreamWriter(filePath);
+                file.WriteLine(json);
+                file.Close();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

@@ -16,10 +16,8 @@
     string selected = "selected";
 
     C_MatHang c_MatHang = new C_MatHang();
-    C_LoaiHang c_LoaiHang = new C_LoaiHang();
     C_HoaDonBanHang c_HoaDonBanHang = new C_HoaDonBanHang();
 
-    List<LoaiHang> listLoaiHang = c_LoaiHang.getAllCategory();
     List<MatHang> listProduct = c_MatHang.getAllProduct();
 
     HoaDonBanHang BillInfoOldToUpdate = c_HoaDonBanHang.getBillOfSaleById(Request["hoadonId"]);
