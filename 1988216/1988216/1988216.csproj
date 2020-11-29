@@ -91,6 +91,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="public\css\mystyle.css" />
     <Content Include="public\img\visa.png" />
     <Content Include="Web.config" />
   </ItemGroup>

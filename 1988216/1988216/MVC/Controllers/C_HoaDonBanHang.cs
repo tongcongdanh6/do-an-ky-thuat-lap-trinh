@@ -149,5 +149,47 @@ namespace _1988216.MVC.Controllers
         {
             return m_HoaDonBanHang.addNewBillOfSale(customerName, dob, address, billingAdress, phone, paymentMethod, shipfee, listProductSold);
         }
+
+        public bool modifyBillOfSale(int BillId, string customerName, string dob, string address, string billingAdress, string phone, string paymentMethod, int shipfee, List<ProductWithQuantity> listProductSold)
+        {
+            // Modify ListProductSold before call modifyBillOfSale()
+            // If Product in list have same Id, we recalculate total of Quantity;
+
+            List<int> listProductId = new List<int>();
+
+            foreach(ProductWithQuantity p in listProductSold)
+            {
+                listProductId.Add(p.Id);
+            }
+
+            // Find duplicate
+            var query = listProductId.GroupBy(x => x)
+                          .Where(g => g.Count() > 1)
+                          .Select(y => new { ProductId = y.Key, Counter = y.Count() })
+                          .ToList();
+
+            foreach(var prodDup in query)
+            {
+                // Calculate Quantity
+                int sumOfQuantity = 0;
+                foreach(ProductWithQuantity p in listProductSold)
+                {
+                    if (p.Id == prodDup.ProductId) sumOfQuantity += p.Quantity;
+                }
+
+                // Remove duplicate product from the list
+                listProductSold.RemoveAll(p => p.Id == prodDup.ProductId);
+
+                // Re-add
+                ProductWithQuantity newProd = new ProductWithQuantity();
+                newProd.Id = prodDup.ProductId;
+                newProd.Quantity = sumOfQuantity;
+
+                listProductSold.Add(newProd);
+            }
+
+
+            return m_HoaDonBanHang.modifyBillOfSale(BillId, customerName, dob, address, billingAdress, phone, paymentMethod, shipfee, listProductSold);
+        }
     }
 }

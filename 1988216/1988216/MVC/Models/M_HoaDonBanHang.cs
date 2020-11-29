@@ -119,5 +119,50 @@ namespace _1988216.MVC.Models
                 return false;
             }
         }
+
+
+        public bool modifyBillOfSale(int BillId, string customerName, string dob, string address, string billingAdress, string phone, string paymentMethod, int shipfee, List<ProductWithQuantity> listProductSold)
+        {
+            List<HoaDonBanHang> listBill = getHoaDonBanHang();
+            // Delete the item with BillId
+            listBill.Remove(listBill.Find(b => b.Id == BillId));
+      
+            // Create new Bill
+            HoaDonBanHang newHd = new HoaDonBanHang();
+            newHd.Id = BillId;
+            newHd.CustomerName = customerName;
+            newHd.Dob = dob;
+            newHd.Address = address;
+            newHd.Phone = phone;
+            newHd.BillingAddress = billingAdress;
+            newHd.PaymentMethod = paymentMethod;
+            newHd.Shipfee = shipfee;
+            newHd.Currency = "VNĐ";
+            newHd.ExchangeRate = 1;
+            newHd.VatTax = 0.1f;
+            newHd.ProductSold = listProductSold.ToArray();
+
+            // Add new item to listBill
+            listBill.Add(newHd);
+
+
+            // Convert list to Array and Convert to JSON
+            string json = JsonConvert.SerializeObject(listBill.ToArray());
+
+            // Write to file
+            try
+            {
+                string filePath = HttpContext.Current.Server.MapPath("~/MVC/Models/HoaDonBanHangData.json");
+
+                StreamWriter file = new StreamWriter(filePath);
+                file.WriteLine(json);
+                file.Close();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

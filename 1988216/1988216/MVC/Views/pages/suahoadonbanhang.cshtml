@@ -28,27 +28,27 @@
     string mess = String.Empty;
     if (IsPost)
     {
-        //List<ProductWithQuantity> listProductSold = new List<ProductWithQuantity>();
-        //foreach(string key in Request.Form.AllKeys)
-        //{
-        //    if(key.Contains("productId"))
-        //    {
-        //        ProductWithQuantity p = new ProductWithQuantity();
-        //        p.Id = int.Parse(Request[key]);
-        //        string keyAmount = "amount" + key.Replace("productId", "");
-        //        p.Quantity = int.Parse(Request[keyAmount]);
-        //        listProductSold.Add(p);
-        //    }
-        //}
+        List<ProductWithQuantity> listProductSold = new List<ProductWithQuantity>();
+        foreach (string key in Request.Form.AllKeys)
+        {
+            if (key.Contains("productId"))
+            {
+                ProductWithQuantity p = new ProductWithQuantity();
+                p.Id = int.Parse(Request[key]);
+                string keyAmount = "amount" + key.Replace("productId", "");
+                p.Quantity = int.Parse(Request[keyAmount]);
+                listProductSold.Add(p);
+            }
+        }
 
-        //if(c_HoaDonBanHang.addNewBillOfSale(Request["customerName"], Request["dob"], Request["address"], Request["billingAddress"], Request["phone"], Request["paymentMethod"], int.Parse(Request["shipfee"]), listProductSold))
-        //{
-        //    Response.Redirect("/?c=dshoadonbanhang");
-        //}
-        //else
-        //{
+        if (c_HoaDonBanHang.modifyBillOfSale(int.Parse(Request["hoadonId"]),Request["customerName"], Request["dob"], Request["address"], Request["billingAddress"], Request["phone"], Request["paymentMethod"], int.Parse(Request["shipfee"]), listProductSold))
+        {
+            Response.Redirect("/?c=dshoadonbanhang");
+        }
+        else
+        {
 
-        //}
+        }
     }
 }
 
@@ -56,7 +56,7 @@
 <main>
 	<div class="container-fluid">
 		@mess
-		<form method="post" action="/?c=suahoadonbanhang">
+		<form method="post" action="/?c=suahoadonbanhang&hoadonId=@BillInfoOldToUpdate.Id">
 			<!-- Section: Inputs -->
 			<section class="section card card-cascade mb-5">
 				<div class="view view-cascade gradient-card-header blue-gradient">
@@ -149,18 +149,20 @@
                     <div class="container-fluid p-0 m-0" id="listProductSold">
 
                         @{
-                               int productCount = 1;
-                               foreach (ProductWithQuantity p in BillInfoOldToUpdate.ProductSold)
-                               {
+                            int productCount = 1;
+                            foreach (ProductWithQuantity p in BillInfoOldToUpdate.ProductSold)
+                            {
                                 <div class="row">
-                                    <div class="col-md-6">
-                                        <select class="mdb-select md-form" id="productId_@productCount " name="productId_@productCount" searchable="Tìm kiếm mặt hàng tại đây..">
-                                            
+                                    <div class="col-md-6 align-self-center">
+                                        <select class="my-select" id="productId_@productCount " name="productId_@productCount" searchable="Tìm kiếm mặt hàng tại đây..">
+                                            <option value="" disabled selected>Chọn mặt hàng</option>
                                             @{
                                                 foreach (MatHang mh in listProduct)
                                                 {
-                                                    <option value="@mh.Id">@mh.TenMatHang</option>
-                                                }
+                                                    <option value="@mh.Id" @{ if (mh.Id == p.Id) { @selected } }>
+                                                        @mh.TenMatHang
+                                                </option>
+                                            }
                                             }
 
                                         </select>
@@ -174,7 +176,7 @@
                                 </div>
 
                                 productCount++;
-                             }
+                            }
                         }
 
                     </div>
@@ -185,7 +187,7 @@
 
                     <div class="row text-center">
                         <div class="col">
-                            <button type="submit" class="btn btn-indigo waves-effect waves-light">Thêm hóa đơn bán hàng</button>
+                            <button type="submit" class="btn btn-indigo waves-effect waves-light">Cập nhật thông tin hóa đơn bán hàng</button>
                         </div>
                     </div>
                 </div>
@@ -199,6 +201,8 @@
         // Material Select Initialization
         $(document).ready(function () {
             $("#customerName").focus();
+
+
 
             $("#addMoreProductBtn").on("click", function () {
                             let currentAmout = $($("#listProductSold .row")).length;
