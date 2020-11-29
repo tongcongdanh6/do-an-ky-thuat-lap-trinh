@@ -1,6 +1,7 @@
 ﻿@using _1988216.MVC.Models;
 @using _1988216.MVC.Controllers;
 @using _1988216.MVC.Core;
+
 @{
     Layout = "~/MVC/Views/_Layout.cshtml";
     Page.Title = "Danh sách mặt hàng";
@@ -36,8 +37,6 @@
             listMatHang = c_MatHang.searchProduct(Request["searchType"], Request["keyword"]);
         }
     }
-
-	@*IEnumerable<MatHang> list2 = listMatHang.Where(item => item.Id > 1);*@
 }
 
 <main>
@@ -194,7 +193,7 @@
 					<form action="/?c=dsmathang&act=delete" id="frmConfirm" method="post">
 						<input type="hidden" name="idOfProductToDelete" id="idOfProductToDelete" value="" />
 						<div class="modal-footer justify-content-center">
-							<button type="submit" class="btn btn-danger px-3 waves-effect waves-light" id="deleteBtn">XÓA</i></button>
+							<button type="submit" class="btn btn-danger px-3 waves-effect waves-light" id="deleteBtn">XÓA</button>
 							<a class="btn btn-outline-danger waves-effect px-3" data-dismiss="modal">Hủy thao tác</a>
 						</div>
 					</form>
@@ -219,7 +218,7 @@
 		$(`#searchType option[value="${document.cookie}"]`).prop("selected", true);
 		if (document.cookie == "stype_hanSD" || document.cookir == "stype_namSX")
 		{
-			$("#tip").html(@consts.DATE_TEXT_HELP_TIP);
+            $("#tip").html("Nhập <b>>=mm/dd/yyyy</b> để tìm mặt hàng SAU ngày này.<br>Nhập <b><=mm/dd/yyyy</b> để tìm mặt hàng TRƯỚC ngày này.<br>Nhập <b>==mm/dd/yyyy</b> để tìm mặt hàng ĐÚNG ngày này.");
 		}
     });
 

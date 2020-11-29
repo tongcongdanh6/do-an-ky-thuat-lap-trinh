@@ -76,7 +76,7 @@ namespace _1988216.MVC.Models
         public string ShipperPhone { get; set; }
         public string Currency { get; set; }
         public int Shipfee { get; set; }
-        public List<ProductWithQuantityAndUnitCost> ProductList { get; set; }
+        public ProductWithQuantityAndUnitCost[] ProductImported { get; set; }
 
         public int TotalValueOfGoodsReceivedNote { get; set; }
         public int TotalQuantityOfProduct { get; set; }

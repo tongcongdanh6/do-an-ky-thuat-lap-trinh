@@ -4,44 +4,47 @@
 
 @{
     Layout = Layout = "~/MVC/Views/_Layout.cshtml";
-    Page.Title = "Sửa hóa đơn bán hàng";
+    Page.Title = "Sửa hóa đơn nhập hàng";
 
     // Redirect if user read directly the file in the MVC Folder
     Lib lib = new Lib();
     if (!lib.isValidUrl())
     {
-        Response.Redirect("/?c=suahoadonbanhang");
+        Response.Redirect("/?c=suahoadonnhaphang");
     }
 
     string selected = "selected";
 
     C_MatHang c_MatHang = new C_MatHang();
-    C_HoaDonBanHang c_HoaDonBanHang = new C_HoaDonBanHang();
+    C_HoaDonNhapHang c_HoaDonNhapHang = new C_HoaDonNhapHang();
 
     List<MatHang> listProduct = c_MatHang.getAllProduct();
 
-    HoaDonBanHang BillInfoOldToUpdate = c_HoaDonBanHang.getBillOfSaleById(Request["hoadonId"]);
+    HoaDonNhapHang BillInfoOldToUpdate = c_HoaDonNhapHang.getGoodsReceivedNoteById(Request["hoadonId"]);
 
 
     string mess = String.Empty;
     if (IsPost)
     {
-        List<ProductWithQuantity> listProductSold = new List<ProductWithQuantity>();
+        List<ProductWithQuantityAndUnitCost> listProductImported = new List<ProductWithQuantityAndUnitCost>();
         foreach (string key in Request.Form.AllKeys)
         {
             if (key.Contains("productId"))
             {
-                ProductWithQuantity p = new ProductWithQuantity();
+                ProductWithQuantityAndUnitCost p = new ProductWithQuantityAndUnitCost();
                 p.Id = int.Parse(Request[key]);
                 string keyAmount = "amount" + key.Replace("productId", "");
                 p.Quantity = int.Parse(Request[keyAmount]);
-                listProductSold.Add(p);
+                string keyUnitCost = "unitcost" + key.Replace("productId", "");
+                p.UnitCost = int.Parse(Request[keyUnitCost]);
+
+                listProductImported.Add(p);
             }
         }
 
-        if (c_HoaDonBanHang.modifyBillOfSale(int.Parse(Request["hoadonId"]),Request["customerName"], Request["dob"], Request["address"], Request["billingAddress"], Request["phone"], Request["paymentMethod"], int.Parse(Request["shipfee"]), listProductSold))
+        if (c_HoaDonNhapHang.modifyGoodsReceivedNote(int.Parse(Request["hoadonId"]), Request["shipperName"], Request["personalId"], Request["shipperAddress"], Request["shipperPhone"], int.Parse(Request["shipfee"]), listProductImported))
         {
-            Response.Redirect("/?c=dshoadonbanhang");
+            Response.Redirect("/?c=dshoadonnhaphang");
         }
         else
         {
@@ -54,17 +57,14 @@
 <main>
 	<div class="container-fluid">
 		@mess
-		<form method="post" action="/?c=suahoadonbanhang&hoadonId=@BillInfoOldToUpdate.Id">
+		<form method="post" action="/?c=suahoadonnhaphang&hoadonId=@BillInfoOldToUpdate.Id">
 			<!-- Section: Inputs -->
 			<section class="section card card-cascade mb-5">
 				<div class="view view-cascade gradient-card-header blue-gradient">
-					<h2 class="h2-responsive mb-0 font-weight-500">Sửa thông tin hóa đơn bán hàng</h2>
+					<h2 class="h2-responsive mb-0 font-weight-500">Sửa thông tin hóa đơn nhập hàng</h2>
 				</div>
 
                 <div class="card-body">
-
-                    <h5></h5>
-
                     <!-- Grid row -->
                     <div class="row">
 
@@ -72,8 +72,8 @@
                         <div class="col-md-6 mb-1">
 
                             <div class="md-form md-outline">
-                                <input type="text" id="customerName" name="customerName" class="form-control" value="@BillInfoOldToUpdate.CustomerName">
-                                <label for="customerName" class="active">Tên khách hàng</label>
+                                <input type="text" id="shipperName" name="shipperName" class="form-control" value="@BillInfoOldToUpdate.ShipperName">
+                                <label for="shipperName" class="active">Tên người giao hàng</label>
                             </div>
 
                         </div>
@@ -81,8 +81,8 @@
                         <div class="col-md-6 mb-1">
 
                             <div class="md-form md-outline">
-                                <input type="date" id="dob" name="dob" class="form-control" value="@BillInfoOldToUpdate.Dob">
-                                <label class="active" for="dob">Ngày tháng năm sinh</label>
+                                <input type="text" id="personalId" name="personalId" class="form-control" value="@BillInfoOldToUpdate.PersonalID">
+                                <label class="active" for="personalId">Số chứng minh nhân dân</label>
                             </div>
 
                         </div>
@@ -92,8 +92,8 @@
                         <div class="col-md-6 mb-1">
 
                             <div class="md-form md-outline">
-                                <input type="text" id="address" name="address" class="form-control" value="@BillInfoOldToUpdate.Address">
-                                <label for="address" class="active">Địa chỉ</label>
+                                <input type="text" id="shipperAddress" name="shipperAddress" class="form-control" value="@BillInfoOldToUpdate.ShipperAddress">
+                                <label for="shipperAddress" class="active">Địa chỉ người giao hàng</label>
                             </div>
 
                         </div>
@@ -101,76 +101,57 @@
                         <div class="col-md-6 mb-1">
 
                             <div class="md-form md-outline">
-                                <input type="text" id="billingAddress" name="billingAddress" class="form-control" value="@BillInfoOldToUpdate.BillingAddress">
-                                <label for="billingAddress" class="active">Địa chỉ giao hàng</label>
+                                <input type="text" id="shipperPhone" name="shipperPhone" class="form-control" value="@BillInfoOldToUpdate.ShipperPhone">
+                                <label for="shipperPhone" class="active">Số điện thoại người giao hàng</label>
                             </div>
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="col-md-6 mb-1">
 
+                        <div class="col-md-6 mb-1">
                             <div class="md-form md-outline">
-                                <input type="number" id="phone" name="phone" class="form-control" value="@BillInfoOldToUpdate.Phone">
-                                <label for="phone" class="active">Số điện thoại</label>
-                            </div>
-
-                        </div>
-
-                        <div class="col-md-6 mb-1">
-
-                            <select class="mdb-select md-form" id="paymentMethod" name="paymentMethod" searchable="Tìm kiếm hình thức thanh toán tại đây..">
-                                <option value="visa" @{if (BillInfoOldToUpdate.PaymentMethod == "visa") {@selected; } }>Visa</option>
-                                <option value="mastercard" @{if (BillInfoOldToUpdate.PaymentMethod == "mastercard") {@selected; } }>Master Card</option>
-                                <option value="atm" @{if (BillInfoOldToUpdate.PaymentMethod == "atm") {@selected; } }>ATM Nội địa</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="row">
-
-                        <!-- Grid column -->
-                        <div class="col-md-6 mb-1">
-
-                            <div class="md-form md-outline">
-                                <input type="number" id="shipfee" name="shipfee" class="form-control" value=@BillInfoOldToUpdate.Shipfee>
+                                <input type="number" id="shipfee" name="shipfee" class="form-control" value="@BillInfoOldToUpdate.Shipfee">
                                 <label class="active" for="shipfee">Phí giao hàng</label>
                             </div>
-
                         </div>
-                        <!-- Grid column -->
-                        <!-- Grid column -->
-
                     </div>
+
                     <!-- Grid row -->
 
-                    <div class="container-fluid p-0 m-0" id="listProductSold">
-
+                    <div class="container-fluid p-0 m-0" id="listProductImported">
+                        <div class="alert alert-info"><b>Lưu ý:</b> Nếu 2 hoặc nhiều hơn sản phẩm cập nhật có cùng Id thì sẽ lấy đơn giá của sản phẩm đầu tiên</div>
                         @{
                             int productCount = 1;
-                            foreach (ProductWithQuantity p in BillInfoOldToUpdate.ProductSold)
+                            foreach (ProductWithQuantityAndUnitCost p in BillInfoOldToUpdate.ProductImported)
                             {
                                 <div class="row">
-                                    <div class="col-md-6 align-self-center">
-                                        <select class="my-select" id="productId_@productCount" name="productId_@productCount" searchable="Tìm kiếm mặt hàng tại đây..">
+                                    <div class="col-md-4">
+                                        <select class="my-select md-form" id="productId_@productCount" name="productId_@productCount" searchable="Tìm kiếm mặt hàng tại đây..">
                                             <option value="" disabled selected>Chọn mặt hàng</option>
                                             @{
                                                 foreach (MatHang mh in listProduct)
                                                 {
-                                                    <option value="@mh.Id" @{ if (mh.Id == p.Id) { @selected } }>
-                                                        @mh.TenMatHang
-                                                </option>
-                                            }
+                                                    <option value="@mh.Id" @{ if (mh.Id == p.Id) { @selected } }>@mh.TenMatHang</option>
+                                                }
                                             }
 
                                         </select>
                                     </div>
-                                    <div class="col-md-6 mb-1">
+                                    <div class="col-md-4 mb-1">
                                         <div class="md-form md-outline">
                                             <input type="number" id="amount_@productCount" name="amount_@productCount" class="form-control" value="@p.Quantity">
                                             <label class="active" for="amount_@productCount">Số lượng</label>
                                         </div>
                                     </div>
+
+                                    <div class="col-md-4 mb-1">
+                                        <div class="md-form md-outline">
+                                            <input type="number" id="unitcost_@productCount" name="unitcost_@productCount" class="form-control" value="@p.UnitCost">
+                                            <label class="active" for="unitcost_@productCount">Đơn giá</label>
+                                        </div>
+                                    </div>
+
                                 </div>
 
                                 productCount++;
@@ -180,12 +161,12 @@
                     </div>
 
 
-                    <button type="button" id="addMoreProductBtn"  class="btn btn-info waves-effect waves-light">Ấn vào đây để thêm mặt hàng cần thêm</button>
+                    <button type="button" id="addMoreProductBtn" class="btn btn-info waves-effect waves-light">Ấn vào đây để thêm mặt hàng cần thêm</button>
 
 
                     <div class="row text-center">
                         <div class="col">
-                            <button type="submit" class="btn btn-indigo waves-effect waves-light">Cập nhật thông tin hóa đơn bán hàng</button>
+                            <button type="submit" class="btn btn-indigo waves-effect waves-light">Sửa thông tin hóa đơn nhập hàng</button>
                         </div>
                     </div>
                 </div>
@@ -198,15 +179,15 @@
     <script>
         // Material Select Initialization
         $(document).ready(function () {
-            $("#customerName").focus();
+            $("#shipperName").focus();
 
 
 
             $("#addMoreProductBtn").on("click", function () {
-                            let currentAmout = $($("#listProductSold .row")).length;
+                let currentAmout = $($("#listProductImported .row")).length;
 
                             let html = `<div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <select class="mdb-select md-form" id="productId_${currentAmout + 1}" name="productId_${currentAmout + 1}" searchable="Tìm kiếm mặt hàng tại đây..">
                                     <option value="" disabled selected>Chọn mặt hàng</option>
                                     @{
@@ -218,15 +199,22 @@
 
                                 </select>
                             </div>
-                            <div class="col-md-6 mb-1">
+                            <div class="col-md-4 mb-1">
                                 <div class="md-form md-outline">
                                     <input type="number" id="amount_${currentAmout + 1}" name="amount_${currentAmout + 1}" class="form-control">
                                     <label class="active" for="amount_${currentAmout + 1}">Số lượng</label>
                                 </div>
                             </div>
+
+                            <div class="col-md-4 mb-1">
+                                <div class="md-form md-outline">
+                                    <input type="number" id="unitcost_${currentAmout + 1}" name="unitcost_${currentAmout + 1}" class="form-control">
+                                    <label class="active" for="unitcost_${currentAmout + 1}">Đơn giá</label>
+                                </div>
+                            </div>
                         </div>`;
 
-                $("#listProductSold").append(html);
+                $("#listProductImported").append(html);
                 $(`#productId_${currentAmout + 1}`).materialSelect();
             });
         });

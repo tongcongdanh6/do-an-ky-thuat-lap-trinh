@@ -34,3 +34,4 @@
 ## Update ngày 29/11/2020
 + Thêm - Sửa Hóa Đơn Bán Hàng
 + Thêm - Xóa Hóa Đơn Bán Hàng
++ Thêm - Thêm, Xóa, Sửa, Tìm Kiếm Hóa Đơn Nhập Hàng

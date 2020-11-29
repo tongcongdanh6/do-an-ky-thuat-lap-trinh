@@ -44,10 +44,17 @@ namespace _1988216.MVC.Models
                     // SO LUONG NHAP HANG (+)
                     foreach (HoaDonNhapHang hd in listNhapHang)
                     {
-                        if (hd.ProductList.Find(hdInList => hdInList.Id == mh.Id) != null)
+                        foreach(ProductWithQuantityAndUnitCost p in hd.ProductImported)
+                        {
+                            if(p.Id == mh.Id)
+                            {
+                                totalQuantityOfAProduct += p.Quantity;
+                            }
+                        }
+/*                        if (hd.ProductImported.Find(hdInList => hdInList.Id == mh.Id) != null)
                         {
                             totalQuantityOfAProduct += hd.ProductList.Find(hdInList => hdInList.Id == mh.Id).Quantity;
-                        }
+                        }*/
                     }
 
                     // SO LUONG DA BAN (-)

@@ -1,1 +1,69 @@
-[{"Id":2,"CustomerName":"Tong Cong Danh 2","Dob":"1991-12-26","Address":"Phuong 25, Quan Binh Thanh, Ho Chi Minh","Phone":"0367596294","BillingAddress":"109B Hoàng Hoa Thám, Phường 6, Quận Bình Thạnh, Hồ Chí Minh","PaymentMethod":"visa","Shipfee":50000,"Currency":"VNĐ","ExchangeRate":1,"VatTax":0.1,"ProductSold":[{"Id":3,"Quantity":3}],"TotalValueOfBill":0.0,"TotalOfQuantity":0.0},{"Id":1,"CustomerName":"Tong Cong Danh 99","Dob":"1991-12-25","Address":"Phuong 23, Quan Binh Thanh, Ho Chi Minh","Phone":"0367596294","BillingAddress":"109B Hoàng Hoa Thám, Phường 6, Quận Bình Thạnh, Hồ Chí Minh","PaymentMethod":"visa","Shipfee":30000,"Currency":"VNĐ","ExchangeRate":1,"VatTax":0.1,"ProductSold":[{"Id":1,"Quantity":2},{"Id":2,"Quantity":4},{"Id":3,"Quantity":1}],"TotalValueOfBill":0.0,"TotalOfQuantity":0.0},{"Id":3,"CustomerName":"Tong Cong Danh test 98","Dob":"1991-12-03","Address":"Hồ Chí Minh","Phone":"0367596294","BillingAddress":"Hồ Chí Minh","PaymentMethod":"visa","Shipfee":240000,"Currency":"VNĐ","ExchangeRate":1,"VatTax":0.1,"ProductSold":[{"Id":2,"Quantity":2}],"TotalValueOfBill":0.0,"TotalOfQuantity":0.0}]
+[
+  {
+    "Id": 2,
+    "CustomerName": "Tong Cong Danh 2",
+    "Dob": "1991-12-26",
+    "Address": "Phuong 25, Quan Binh Thanh, Ho Chi Minh",
+    "Phone": "0367596294",
+    "BillingAddress": "109B Hoàng Hoa Thám, Phường 6, Quận Bình Thạnh, Hồ Chí Minh",
+    "PaymentMethod": "visa",
+    "Shipfee": 50000,
+    "Currency": "VNĐ",
+    "ExchangeRate": 1,
+    "VatTax": 0.1,
+    "ProductSold": [
+      {
+        "Id": 3,
+        "Quantity": 3
+      }
+    ],
+    "TotalValueOfBill": 0.0,
+    "TotalOfQuantity": 0.0
+  },
+  {
+    "Id": 3,
+    "CustomerName": "Hoàng Thị Ngọc Huyền",
+    "Dob": "1991-12-03",
+    "Address": "Hồ Chí Minh",
+    "Phone": "0367596294",
+    "BillingAddress": "Hồ Chí Minh",
+    "PaymentMethod": "visa",
+    "Shipfee": 240000,
+    "Currency": "VNĐ",
+    "ExchangeRate": 1,
+    "VatTax": 0.1,
+    "ProductSold": [
+      {
+        "Id": 2,
+        "Quantity": 2
+      }
+    ],
+    "TotalValueOfBill": 0.0,
+    "TotalOfQuantity": 0.0
+  },
+  {
+    "Id": 1,
+    "CustomerName": "Tống Công Danh",
+    "Dob": "1991-12-04",
+    "Address": "109B Hoàng Hoa Thám, Phường 6, Quận Bình Thạnh, Hồ Chí Minh",
+    "Phone": "0367596294",
+    "BillingAddress": "109B Hoàng Hoa Thám, Phường 6, Quận Bình Thạnh, Hồ Chí Minh",
+    "PaymentMethod": "visa",
+    "Shipfee": 200000,
+    "Currency": "VNĐ",
+    "ExchangeRate": 1,
+    "VatTax": 0.1,
+    "ProductSold": [
+      {
+        "Id": 1,
+        "Quantity": 3
+      },
+      {
+        "Id": 2,
+        "Quantity": 5
+      }
+    ],
+    "TotalValueOfBill": 0.0,
+    "TotalOfQuantity": 0.0
+  }
+]

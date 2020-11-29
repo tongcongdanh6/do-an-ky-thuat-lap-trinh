@@ -1,44 +1,81 @@
-﻿[
+[
   {
-    "id": 1,
-    "shipperName": "Phạm Hồng Tú",
-    "personalID": "301405775",
-    "shipperAddress": "150B Hoàng Hoa Thám, Quận Thủ Đức, TP Hồ Chí Minh",
-    "shipperPhone": "0969345895",
-    "currency": "VNĐ",
-    "shipfee": 200000,
-    "products_list": [
+    "Id": 2,
+    "ShipperName": "Phạm Hồng Tú",
+    "PersonalID": "301405775",
+    "ShipperAddress": "150B Hoàng Hoa Thám, Quận Thủ Đức, TP Hồ Chí Minh",
+    "ShipperPhone": "0969345895",
+    "Currency": "VNĐ",
+    "Shipfee": 150000,
+    "ProductImported": [
       {
-        "id": 1,
-        "quantity": 3,
-        "unitCost": 28000
+        "UnitCost": 28000,
+        "Id": 1,
+        "Quantity": 4
       },
       {
-        "id": 2,
-        "quantity": 10,
-        "unitCost": 50000
+        "UnitCost": 50000,
+        "Id": 3,
+        "Quantity": 10
       }
-    ]
+    ],
+    "TotalValueOfGoodsReceivedNote": 0,
+    "TotalQuantityOfProduct": 0
   },
   {
-    "id": 2,
-    "shipperName": "Phạm Hồng Tú",
-    "personalID": "301405775",
-    "shipperAddress": "150B Hoàng Hoa Thám, Quận Thủ Đức, TP Hồ Chí Minh",
-    "shipperPhone": "0969345895",
-    "currency": "VNĐ",
-    "shipfee": 150000,
-    "products_list": [
+    "Id": 4,
+    "ShipperName": "Hoàng Thị Ngọc Sang 2",
+    "PersonalID": "301405775",
+    "ShipperAddress": "Hồ Chí Minh",
+    "ShipperPhone": "0367596294",
+    "Currency": "VNĐ",
+    "Shipfee": 200000,
+    "ProductImported": [
       {
-        "id": 1,
-        "quantity": 4,
-        "unitCost": 28000
+        "UnitCost": 11000000,
+        "Id": 7,
+        "Quantity": 2
       },
       {
-        "id": 3,
-        "quantity": 10,
-        "unitCost": 50000
+        "UnitCost": 2000000,
+        "Id": 8,
+        "Quantity": 2
       }
-    ]
+    ],
+    "TotalValueOfGoodsReceivedNote": 0,
+    "TotalQuantityOfProduct": 0
+  },
+  {
+    "Id": 1,
+    "ShipperName": "Nguyễn Hoàng An",
+    "PersonalID": "301405775",
+    "ShipperAddress": "150B Hoàng Hoa Thám, Quận Thủ Đức, TP Hồ Chí Minh",
+    "ShipperPhone": "0969345895",
+    "Currency": "VNĐ",
+    "Shipfee": 200000,
+    "ProductImported": [
+      {
+        "UnitCost": 29000,
+        "Id": 1,
+        "Quantity": 4
+      },
+      {
+        "UnitCost": 10000,
+        "Id": 3,
+        "Quantity": 1
+      },
+      {
+        "UnitCost": 2100000,
+        "Id": 8,
+        "Quantity": 1
+      },
+      {
+        "UnitCost": 50000,
+        "Id": 2,
+        "Quantity": 12
+      }
+    ],
+    "TotalValueOfGoodsReceivedNote": 0,
+    "TotalQuantityOfProduct": 0
   }
 ]

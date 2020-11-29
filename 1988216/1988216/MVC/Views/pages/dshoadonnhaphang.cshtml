@@ -11,7 +11,7 @@
 
     if (!lib.isValidUrl())
     {
-        Response.Redirect("/?c=dshoadonbanhang");
+        Response.Redirect("/?c=dshoadonnhaphang");
     }
 
     C_HoaDonNhapHang c_HoaDonNhapHang = new C_HoaDonNhapHang();
@@ -21,21 +21,25 @@
 
     if (IsPost)
     {
-        @*		if (Request["act"] == "delete")
+        if (Request["act"] == "delete")
+        {
+            mess = "Xoa " + Request["idOfBillToDelete"];
+            if (c_HoaDonNhapHang.deleteGoodsReceivedNote(int.Parse(Request["idOfBillToDelete"])))
             {
-                mess = "Xoa " + Request["idOfProductToDelete"];
-                c_MatHang.deleteProduct(int.Parse(Request["idOfProductToDelete"]));
+                Response.Redirect("/?c=dshoadonnhaphang");
+            }
+            else
+            {
 
-                Response.Redirect("/?c=dsmathang");
-            }*@
+            }
+        }
 
-@*    if (Request["act"] == "timkiem")
-    {
-        listHoaDonBanHang = c_HoaDonBanHang.searchBillOfSale(Request["searchType"], Request["keyword"]);
-    }*@
-}
+        if (Request["act"] == "timkiem")
+        {
+            listGoodsReceivedNote = c_HoaDonNhapHang.searchGoodsReceivedNote(Request["searchType"], Request["keyword"]);
+        }
+    }
 
-    @*IEnumerable<MatHang> list2 = listMatHang.Where(item => item.Id > 1);*@
 }
 
 <main>
@@ -43,16 +47,16 @@
         <!-- Section: Hoverable -->
         <section>
             <div class="card pl-5 py-2 mb-5">
-                <form class="form-inline" id="frm-search" method="post" action="/?c=dshoadonbanhang&act=timkiem">
+                <form class="form-inline" id="frm-search" method="post" action="/?c=dshoadonnhaphang&act=timkiem">
                     <div class="md-form my-0">
                         <input class="form-control mr-sm-2" type="text" name="keyword" id="keyword" placeholder="Nhập từ khóa vào đây" aria-label="Search" required oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('Nhập từ khóa tìm kiếm')">
                         <b>Tìm kiếm theo: </b>
                         <select class="browser-default custom-select" name="searchType" id="searchType" style="display: inline!important; font-family: inherit">
-                            <option value="stype_maHoaDonBanHang">Mã hóa đơn nhập hàng</option>
-                            <option value="stype_customerName">Tên người giao hàng</option>
-                            <option value="stype_customerName">Địa chỉ người giao hàng</option>
-                            <option value="stype_paymentMethod">Số chứng minh thư</option>
-                            <option value="stype_paymentMethod">Số điện thoại người giao</option>
+                            <option value="stype_maHoaDonNhapHang">Mã hóa đơn nhập hàng</option>
+                            <option value="stype_shipperName">Tên người giao hàng</option>
+                            <option value="stype_shipperAddress">Địa chỉ người giao hàng</option>
+                            <option value="stype_personalId">Số chứng minh thư</option>
+                            <option value="stype_shipperPhone">Số điện thoại người giao</option>
                         </select>
                         <button class="btn btn-outline-black btn-sm" id="dark-mode">Tìm kiếm</button>
                     </div>
@@ -87,7 +91,7 @@
                                 <th>Địa chỉ người giao hàng</th>
                                 <th>Số điện thoại người giao</th>
                                 <th>Tổng giá trị phải trả</th>
-                                <th>Số lượng hàng mua</th>
+                                <th>Số lượng hàng nhập</th>
                                 <th>Phí vận chuyển</th>
                                 <th>Thao tác</th>
                             </tr>
@@ -106,7 +110,7 @@
                                     <td>@hd.TotalQuantityOfProduct</td>
                                     <td>@String.Format("{0:n0}", hd.Shipfee) @hd.Currency</td>
                                     <td>
-                                        <a class="btn btn-indigo waves-effect waves-light" href="/?c=suahoadonbanhang&hoadonId=@hd.Id">Sửa</a>
+                                        <a class="btn btn-indigo waves-effect waves-light" href="/?c=suahoadonnhaphang&hoadonId=@hd.Id">Sửa</a>
 
                                         <button class="btn btn-secondary waves-effect waves-light"
                                                 data-toggle="modal" data-mhid=@hd.Id data-target="#confirmModal">
@@ -161,16 +165,16 @@
 
                             <div class="col-9">
                                 <p>
-                                    Việc thực hiện thao tác XÓA HÓA ĐƠN NHẬP HÀNG làm cho dữ liệu vĩnh viễn mất đi và có thể không khôi phục lại được? Bạn có thực sự muốn XÓA HÓA ĐƠN mang MÃ HÓA ĐƠN bên dưới?
+                                   XÓA HÓA ĐƠN NHẬP HÀNG làm dữ liệu mất vĩnh viễn, không khôi phục lại được? Bạn có thực sự muốn XÓA HÓA ĐƠN mang MÃ HÓA ĐƠN bên dưới?
                                 </p>
                                 <h2><span class="badge" id="confirmModal-idmh">Mã hóa đơn nhập hàng: </span></h2>
                             </div>
                         </div>
                     </div>
                     <form action="/?c=dshoadonnhaphang&act=delete" id="frmConfirm" method="post">
-                        <input type="hidden" name="idOfProductToDelete" id="idOfProductToDelete" value="" />
+                        <input type="hidden" name="idOfBillToDelete" id="idOfBillToDelete" value="" />
                         <div class="modal-footer justify-content-center">
-                            <button type="submit" class="btn btn-danger px-3 waves-effect waves-light" id="deleteBtn">XÓA</i></button>
+                            <button type="submit" class="btn btn-danger px-3 waves-effect waves-light" id="deleteBtn">XÓA</button>
                             <a class="btn btn-outline-danger waves-effect px-3" data-dismiss="modal">Hủy thao tác</a>
                         </div>
                     </form>
@@ -193,7 +197,7 @@
     $("#tableMatHang .btn").on("click", function () {
         let id = $(this).data("mhid");
         $("#confirmModal-idmh").html("Mã hóa đơn nhập hàng: " + id);
-        $("#idOfProductToDelete").val(id);
+        $("#idOfBillToDelete").val(id);
     });
 
 
