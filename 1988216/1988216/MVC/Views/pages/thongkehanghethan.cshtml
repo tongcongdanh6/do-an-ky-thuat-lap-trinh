@@ -4,7 +4,7 @@
 
 @{
     Layout = "~/MVC/Views/_Layout.cshtml";
-    Page.Title = "Danh sách mặt hàng";
+    Page.Title = "Danh sách mặt hàng hết hạn sử dụng";
 
     // Redirect if user read directly the file in the MVC Folder
     Lib lib = new Lib();
@@ -12,26 +12,19 @@
 
     if (!lib.isValidUrl())
     {
-        Response.Redirect("/?c=dsmathang");
+        Response.Redirect("/?c=thongkehanghethan");
     }
 
     C_MatHang c_MatHang = new C_MatHang();
     C_LoaiHang c_LoaiHang = new C_LoaiHang();
-    List<MatHang> listMatHang = c_MatHang.getAllProduct();
+
+    List<MatHang> listMatHang = c_MatHang.getExpiredProduct();
     List<LoaiHang> listLoaiHang = c_LoaiHang.getAllCategory();
 
     string mess = String.Empty;
 
     if (IsPost)
     {
-        if (Request["act"] == "delete")
-        {
-            mess = "Xoa " + Request["idOfProductToDelete"];
-            c_MatHang.deleteProduct(int.Parse(Request["idOfProductToDelete"]));
-
-            Response.Redirect("/?c=dsmathang");
-        }
-
         if (Request["act"] == "timkiem")
         {
             listMatHang = c_MatHang.searchProductInAList(Request["searchType"], Request["keyword"], listMatHang);
@@ -44,7 +37,7 @@
 		<!-- Section: Hoverable -->
 		<section>
 			<div class="card pl-5 py-2 mb-5">
-				<form class="form-inline" id="frm-search" method="post" action="/?c=dsmathang&act=timkiem">
+				<form class="form-inline" id="frm-search" method="post" action="/?c=thongkehanghethan&act=timkiem">
 					<div class="md-form my-0">
 						<input class="form-control mr-sm-2" type="text" name="keyword" id="keyword" placeholder="Nhập từ khóa vào đây" aria-label="Search" required oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('Nhập từ khóa tìm kiếm')">
 						<b>Tìm kiếm theo: </b>
@@ -65,14 +58,14 @@
 			@{
                 if (Request["act"] == "timkiem")
                 {
-					<a href="/?c=dsmathang" class="btn btn-secondary waves-effect waves-light">Load lại đầy đủ dữ liệu</a>
+					<a href="/?c=thongkehanghethan" class="btn btn-secondary waves-effect waves-light">Load lại đầy đủ dữ liệu</a>
                 }
 			}
 
 
 			<div class="card card-cascade">
 				<div class="view view-cascade gradient-card-header blue-gradient">
-					<h2 class="h2-responsive mb-0 font-weight-500">Danh sách mặt hàng</h2>
+					<h2 class="h2-responsive mb-0 font-weight-500">Danh sách mặt hàng hết hạn sử dụng</h2>
 				</div>
 				<div class="card-body">
 
@@ -90,7 +83,6 @@
 								<th>Giá bán (VNĐ)</th>
 								<th>Số lượng</th>
 								<th>Loại hàng</th>
-								<th>Thao tác</th>
 							</tr>
 						</thead>
 						<!-- Table head -->
@@ -126,15 +118,6 @@
                                                 }
                                             }
 										}
-									</td>
-									<td>
-
-										<a class="btn btn-indigo waves-effect waves-light" href="/?c=suamathang&productId=@mh.Id">Sửa</a>
-
-										<button class="btn btn-secondary waves-effect waves-light"
-												data-toggle="modal" data-mhid=@mh.Id data-target="#confirmModal">
-											Xóa
-										</button>
 									</td>
 								</tr>
                                             }

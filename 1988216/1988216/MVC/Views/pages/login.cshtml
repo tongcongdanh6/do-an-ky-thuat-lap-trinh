@@ -1,12 +1,33 @@
-﻿@{
-	Layout = null;
-	Page.Title = "Login";
+﻿@using _1988216.MVC.Models;
+@using _1988216.MVC.Controllers;
+@using _1988216.MVC.Core;
 
-	if (IsPost)
-	{
-		Session["username"] = Request["username"];
-		Response.Redirect(Request["returnUrl"]);
-	}
+@{
+    Layout = null;
+    Page.Title = "Login";
+
+    C_Users c_Users = new C_Users();
+
+    string mess = String.Empty;
+
+    if (IsPost)
+    {
+        if (c_Users.Login(Request["username"], Request["password"])) {
+            Session["username"] = Request["username"];
+            if(String.IsNullOrEmpty(Request["returnUrl"]))
+            {
+                Response.Redirect("/?c=home");
+            }
+            else
+            {
+                Response.Redirect(Request["returnUrl"]);
+            }
+        }
+        else
+        {
+            mess = "Sai thông tin đăng nhập";
+        }
+    }
 }
 
 
@@ -62,75 +83,83 @@
 
 <body class="login-page">
 
-	<!-- Main Navigation -->
-	<header>
-		<!-- Intro Section -->
-		<section class="view intro-2">
-			<div class="mask rgba-stylish-strong h-100 d-flex justify-content-center align-items-center">
-				<div class="container">
-					<div class="row">
-						<div class="col-xl-5 col-lg-6 col-md-10 col-sm-12 mx-auto mt-5">
+    <!-- Main Navigation -->
+    <header>
+        <!-- Intro Section -->
+        <section class="view intro-2">
+            <div class="mask rgba-stylish-strong h-100 d-flex justify-content-center align-items-center">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-5 col-lg-6 col-md-10 col-sm-12 mx-auto mt-5">
 
-							<!-- Form with header -->
-							<div class="card wow fadeIn" data-wow-delay="0.3s">
-								<div class="card-body">
-									<form action="~/MVC/Views/pages/login.cshtml?returnUrl=@Page.ReturnUrl" method="post">
-										<!-- Header -->
-										<div class="form-header purple-gradient">
-											<h3 class="font-weight-500 my-2 py-1"><i class="fas fa-user"></i> Đăng nhập:</h3>
-										</div>
+                            <!-- Form with header -->
+                            <div class="card wow fadeIn" data-wow-delay="0.3s">
+                                <div class="card-body">
+                                    <form action="/?c=login&returnUrl=@Page.ReturnUrl" method="post">
+                                        <!-- Header -->
+                                        <div class="form-header purple-gradient">
+                                            <h3 class="font-weight-500 my-2 py-1"><i class="fas fa-user"></i> Đăng nhập:</h3>
+                                        </div>
 
-										<!-- Body -->
-										<div class="md-form">
-											<i class="fas fa-user prefix white-text"></i>
-											<input type="text" id="orangeForm-name" name="username" class="form-control" value="1988216">
-											<label for="orangeForm-name">Tên đăng nhập</label>
-										</div>
+                                        <!-- Body -->
+                                        <div class="md-form">
+                                            <i class="fas fa-user prefix white-text"></i>
+                                            <input type="text" id="orangeForm-name" name="username" class="form-control" value="1988216">
+                                            <label for="orangeForm-name">Tên đăng nhập</label>
+                                        </div>
 
-										<div class="md-form">
-											<i class="fas fa-lock prefix white-text"></i>
-											<input type="password" id="orangeForm-pass" name="password" class="form-control" value="1988216">
-											<label for="orangeForm-pass">Mật khẩu</label>
-										</div>
-										<div class="text-center">
-											<button class="btn purple-gradient btn-lg" type="submit">Đăng nhập</button>
-											<hr class="mt-4">
-											<div class="inline-ul text-center d-flex justify-content-center">
-												<a class="p-2 m-2 fa-lg tw-ic"><i class="fab fa-twitter white-text"></i></a>
-												<a class="p-2 m-2 fa-lg li-ic"><i class="fab fa-linkedin-in white-text"> </i></a>
-												<a class="p-2 m-2 fa-lg ins-ic"><i class="fab fa-instagram white-text"> </i></a>
-											</div>
-										</div>
-									</form>
-								</div>
-							</div>
-							<!-- Form with header -->
+                                        <div class="md-form">
+                                            <i class="fas fa-lock prefix white-text"></i>
+                                            <input type="password" id="orangeForm-pass" name="password" class="form-control" value="1988216">
+                                            <label for="orangeForm-pass">Mật khẩu</label>
+                                        </div>
+                                        <div class="text-center">
+                                            <button class="btn purple-gradient btn-lg" type="submit">Đăng nhập</button>
+                                            <a class="btn blue-gradient btn-lg" href="/?c=register">Đăng ký</a>
+                                            <hr class="mt-4">
+                                            <div class="inline-ul text-center d-flex justify-content-center">
+                                                <a class="p-2 m-2 fa-lg tw-ic"><i class="fab fa-twitter white-text"></i></a>
+                                                <a class="p-2 m-2 fa-lg li-ic"><i class="fab fa-linkedin-in white-text"> </i></a>
+                                                <a class="p-2 m-2 fa-lg ins-ic"><i class="fab fa-instagram white-text"> </i></a>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    @{
+                                        if (!String.IsNullOrEmpty(mess))
+                                        {
+                                            <div class="alert alert-info">@mess</div>
+                                        }
+                                    }
 
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-		<!-- Intro Section -->
+                                </div>
+                            </div>
+                            <!-- Form with header -->
 
-	</header>
-	<!-- Main Navigation -->
-	<!-- SCRIPTS -->
-	<!-- JQuery -->
-	<script type="text/javascript" src="~/MVC/Vendors/MDB/js/jquery-3.4.1.min.js"></script>
-	<!-- Bootstrap tooltips -->
-	<script type="text/javascript" src="~/MVC/Vendors/MDB/js/popper.min.js"></script>
-	<!-- Bootstrap core JavaScript -->
-	<script type="text/javascript" src="~/MVC/Vendors/MDB/js/bootstrap.min.js"></script>
-	<!-- MDB core JavaScript -->
-	<script type="text/javascript" src="~/MVC/Vendors/MDB/js/mdb.js"></script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Intro Section -->
 
-	<!-- Custom scripts -->
-	<script>
+    </header>
+    <!-- Main Navigation -->
+    <!-- SCRIPTS -->
+    <!-- JQuery -->
+    <script type="text/javascript" src="~/MVC/Vendors/MDB/js/jquery-3.4.1.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript" src="~/MVC/Vendors/MDB/js/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="~/MVC/Vendors/MDB/js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="~/MVC/Vendors/MDB/js/mdb.js"></script>
 
-    new WOW().init();
+    <!-- Custom scripts -->
+    <script>
 
-	</script>
+        new WOW().init();
+
+    </script>
 
 </body>
 

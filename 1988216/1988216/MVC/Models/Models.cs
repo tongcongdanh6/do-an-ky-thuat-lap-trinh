@@ -5,7 +5,11 @@ using System.Web;
 
 namespace _1988216.MVC.Models
 {
-
+    public class User
+    {
+        public string Username { get; set; }
+        public string Password { get; set; }
+    }
     public class LoaiHang
     {
         public LoaiHang()

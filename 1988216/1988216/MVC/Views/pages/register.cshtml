@@ -1,0 +1,251 @@
+﻿@using _1988216.MVC.Models;
+@using _1988216.MVC.Controllers;
+@using _1988216.MVC.Core;
+
+@{
+    Layout = null;
+    Page.Title = "Đăng ký";
+
+    C_Users c_Users = new C_Users();
+
+    string mess = String.Empty;
+    bool isSuccess = false;
+    if (IsPost)
+    {
+        if(c_Users.Register(Request["username"], Request["password"]))
+        {
+            mess = "Đăng ký thành công. Hệ thống tự chuyển hướng sau 3 giây!";
+            isSuccess = true;
+        }
+        else
+        {
+            mess = "Đăng ký thất bại";
+        }
+    }
+}
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>@Page.Title</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <!-- Bootstrap core CSS -->
+    <link href="~/MVC/Vendors/MDB/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="~/MVC/Vendors/MDB/css/mdb.min.css" rel="stylesheet">
+
+    @{ 
+        if(isSuccess)
+        {
+            <meta http-equiv="refresh" content="3; url='/?c=home'" />
+        }
+    }
+    <!-- Your custom styles (optional) -->
+    <style>
+        html,
+        body,
+        header,
+        .view {
+            height: 100%;
+        }
+
+        @@media (min-width: 851px) and (max-width: 1440px) {
+            html,
+            body,
+            header,
+            .view {
+                height: 850px;
+            }
+        }
+
+        @@media (min-width: 800px) and (max-width: 850px) {
+            html,
+            body,
+            header,
+            .view {
+                height: 1000px;
+            }
+        }
+
+        @@media (min-width: 451px) and (max-width: 740px) {
+            html,
+            body,
+            header,
+            .view {
+                height: 1200px;
+            }
+        }
+
+        @@media (max-width: 450px) {
+            html,
+            body,
+            header,
+            .view {
+                height: 1400px;
+            }
+        }
+    </style>
+</head>
+
+<body class="register-page">
+
+    <!-- Main Navigation -->
+    <header>
+
+        <!-- Intro Section -->
+        <section class="view intro-2">
+            <div class="mask rgba-gradient">
+                <div class="container h-100 d-flex justify-content-center align-items-center">
+
+                    <!-- Grid row -->
+                    <div class="row pt-5">
+
+                        <!-- Grid column -->
+                        <div class="col-md-12">
+
+                            <div class="card">
+                                <div class="card-body">
+
+                                    <h2 class="font-weight-bold my-4 text-center mb-5 mt-4 font-weight-bold">
+                                        <strong>Đăng ký tài khoản</strong>
+                                    </h2>
+                                    <hr>
+
+                                    <!-- Grid row -->
+                                    <div class="row mt-5">
+
+                                        <!-- Grid column -->
+                                        <div class="col-md-6 ml-lg-5 ml-md-3">
+
+                                            <!-- Grid row -->
+                                            <div class="row pb-4">
+                                                <div class="col-2 col-lg-1">
+                                                    <i class="fas fa-university indigo-text fa-lg"></i>
+                                                </div>
+                                                <div class="col-10">
+                                                    <h4 class="font-weight-bold mb-4">
+                                                        <strong>Safety</strong>
+                                                    </h4>
+                                                    <p class="">
+                                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit maiores nam, aperiam
+                                                        minima assumenda deleniti hic.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <!-- Grid row -->
+                                            <!-- Grid row -->
+                                            <div class="row pb-4">
+                                                <div class="col-2 col-lg-1">
+                                                    <i class="fas fa-desktop deep-purple-text fa-lg"></i>
+                                                </div>
+                                                <div class="col-10">
+                                                    <h4 class="font-weight-bold mb-4">
+                                                        <strong>Technology</strong>
+                                                    </h4>
+                                                    <p class="">
+                                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit maiores nam, aperiam
+                                                        minima assumenda deleniti hic.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <!-- Grid row -->
+                                            <!-- Grid row -->
+                                            <div class="row pb-4">
+                                                <div class="col-2 col-lg-1">
+                                                    <i class="far fa-money-bill-alt purple-text fa-lg"></i>
+                                                </div>
+                                                <div class="col-10">
+                                                    <h4 class="font-weight-bold mb-4">
+                                                        <strong>Finance</strong>
+                                                    </h4>
+                                                    <p class="">
+                                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit maiores nam, aperiam
+                                                        minima assumenda deleniti hic.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <!-- Grid row -->
+
+                                        </div>
+                                        <!-- Grid column -->
+                                        <!-- Grid column -->
+                                        <div class="col-md-5">
+
+                                            <form action="?c=register" method="post">
+                                                <!-- Body -->
+                                                <div class="md-form">
+                                                    <i class="fas fa-user prefix"></i>
+                                                    <input type="text" id="username" name="username" class="form-control" required>
+                                                    <label for="username">Tên đăng nhập</label>
+                                                </div>
+
+                                                <div class="md-form">
+                                                    <i class="fas fa-lock prefix"></i>
+                                                    <input type="password" id="password" name="password" class="form-control" required>
+                                                    <label for="password">Mật khẩu</label>
+                                                </div>
+
+                                                <div class="text-center">
+                                                    <button type="submit" class="btn btn-indigo btn-rounded mt-5">Đăng ký</button>
+                                                </div>
+                                            </form>
+
+                                            @{
+                                                if (!String.IsNullOrEmpty(mess))
+                                                {
+                                                    <div class="alert alert-info">@mess</div>
+                                                }
+                                            }
+
+                                        </div>
+                                        <!-- Grid column -->
+
+                                    </div>
+                                    <!-- Grid row -->
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- Grid column -->
+
+                    </div>
+                    <!-- Grid row -->
+
+                </div>
+            </div>
+        </section>
+        <!-- Intro Section -->
+
+    </header>
+    <!-- Main Navigation -->
+    <!--  SCRIPTS  -->
+    <!-- JQuery -->
+    <script type="text/javascript" src="~/MVC/Vendors/MDB/js/jquery-3.4.1.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript" src="~/MVC/Vendors/MDB/js/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="~/MVC/Vendors/MDB/js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="~/MVC/Vendors/MDB/js/mdb.min.js"></script>
+
+    <!-- Custom scripts -->
+    <script>
+        $(document).ready(function () {
+            $("#username").focus();
+        });
+
+        new WOW().init();
+
+    </script>
+
+</body>
+
+</html>

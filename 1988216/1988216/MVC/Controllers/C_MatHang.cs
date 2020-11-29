@@ -24,6 +24,22 @@ namespace _1988216.MVC.Controllers
             return m_matHang.getMatHang();
         }
 
+        public List<MatHang> getExpiredProduct()
+        {
+            List<MatHang> list = getAllProduct();
+            List<MatHang> res = new List<MatHang>();
+
+            foreach(MatHang mh in list)
+            {
+                if(DateTime.Parse(mh.HanSD) < DateTime.Today)
+                {
+                    res.Add(mh);
+                }
+            }
+
+            return res;
+        }
+
         public MatHang getProductById(string productId)
         {
             try
@@ -75,16 +91,15 @@ namespace _1988216.MVC.Controllers
             
         }
 
-        public List<MatHang> searchProduct(string searchType, string keyword)
+        public List<MatHang> searchProductInAList(string searchType, string keyword, List<MatHang> list)
         {
             try
             {
                 List<MatHang> resultList = new List<MatHang>();
-                List<MatHang> listMatHangfromDB = m_matHang.getMatHang();
                 switch (searchType)
                 {
                     case "stype_maHang":
-                        foreach (MatHang mh in listMatHangfromDB)
+                        foreach (MatHang mh in list)
                         {
                             if (mh.Id == int.Parse(keyword))
                             {
@@ -95,7 +110,7 @@ namespace _1988216.MVC.Controllers
                         break;
 
                     case "stype_tenMatHang":
-                        foreach (MatHang mh in listMatHangfromDB)
+                        foreach (MatHang mh in list)
                         {
                             if (mh.TenMatHang.ToLower().Contains(keyword.ToLower()))
                             {
@@ -109,7 +124,7 @@ namespace _1988216.MVC.Controllers
                         {
                             DateTime ts = lib.convertStringToDateTimeWithOperator(">=", keyword);
 
-                            foreach (MatHang mh in listMatHangfromDB)
+                            foreach (MatHang mh in list)
                             {
                                 if (DateTime.Parse(mh.HanSD) >= ts)
                                 {
@@ -121,7 +136,7 @@ namespace _1988216.MVC.Controllers
                         if (keyword.Trim().Contains("<="))
                         {
                             DateTime ts = lib.convertStringToDateTimeWithOperator("<=", keyword);
-                            foreach (MatHang mh in listMatHangfromDB)
+                            foreach (MatHang mh in list)
                             {
                                 if (DateTime.Parse(mh.HanSD) <= ts)
                                 {
@@ -133,7 +148,7 @@ namespace _1988216.MVC.Controllers
                         if (keyword.Trim().Contains("=="))
                         {
                             DateTime ts = lib.convertStringToDateTimeWithOperator("==", keyword);
-                            foreach (MatHang mh in listMatHangfromDB)
+                            foreach (MatHang mh in list)
                             {
                                 if (DateTime.Parse(mh.HanSD) == ts)
                                 {
@@ -145,26 +160,26 @@ namespace _1988216.MVC.Controllers
                         break;
 
                     case "stype_congTySX":
-                        resultList = listMatHangfromDB.FindAll(mh => mh.CongTySX.ToLower().Contains(keyword.ToLower()) == true);
+                        resultList = list.FindAll(mh => mh.CongTySX.ToLower().Contains(keyword.ToLower()) == true);
                         break;
 
                     case "stype_namSX":
                         if (keyword.Trim().Contains(">="))
                         {
                             DateTime ts = lib.convertStringToDateTimeWithOperator(">=", keyword);
-                            resultList = listMatHangfromDB.FindAll(mh => DateTime.Parse(mh.NamSX) >= ts);
+                            resultList = list.FindAll(mh => DateTime.Parse(mh.NamSX) >= ts);
                         }
 
                         if (keyword.Trim().Contains("<="))
                         {
                             DateTime ts = lib.convertStringToDateTimeWithOperator("<=", keyword);
-                            resultList = listMatHangfromDB.FindAll(mh => DateTime.Parse(mh.NamSX) <= ts);
+                            resultList = list.FindAll(mh => DateTime.Parse(mh.NamSX) <= ts);
                         }
 
                         if (keyword.Trim().Contains("=="))
                         {
                             DateTime ts = lib.convertStringToDateTimeWithOperator("==", keyword);
-                            resultList = listMatHangfromDB.FindAll(mh => DateTime.Parse(mh.NamSX) == ts);
+                            resultList = list.FindAll(mh => DateTime.Parse(mh.NamSX) == ts);
                         }
                         break;
 
@@ -174,7 +189,7 @@ namespace _1988216.MVC.Controllers
 
                         foreach(LoaiHang lh in filteredListLoaiHang)
                         {
-                            foreach(MatHang mh in listMatHangfromDB)
+                            foreach(MatHang mh in list)
                             {
                                 if(mh.LoaiHang == lh.Id)
                                 {

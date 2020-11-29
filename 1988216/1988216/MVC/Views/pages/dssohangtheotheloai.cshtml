@@ -25,18 +25,7 @@
 
     if (IsPost)
     {
-@*        if (Request["act"] == "delete")
-        {
-            mess = "Xoa " + Request["idOfProductToDelete"];
-            c_MatHang.deleteProduct(int.Parse(Request["idOfProductToDelete"]));
 
-            Response.Redirect("/?c=dssohangtheotheloai");
-        }*@
-
-@*        if (Request["act"] == "timkiem")
-        {
-            listMatHang = c_MatHang.searchProduct(Request["searchType"], Request["keyword"]);
-        }*@
     }
 
 }
@@ -45,32 +34,6 @@
 	<div class="container-fluid">
 		<!-- Section: Hoverable -->
 		<section>
-@*			<div class="card pl-5 py-2 mb-5">
-				<form class="form-inline" id="frm-search" method="post" action="/?c=dsmathang&act=timkiem">
-					<div class="md-form my-0">
-						<input class="form-control mr-sm-2" type="text" name="keyword" id="keyword" placeholder="Nhập từ khóa vào đây" aria-label="Search" required oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('Nhập từ khóa tìm kiếm')">
-						<b>Tìm kiếm theo: </b>
-						<select class="browser-default custom-select" name="searchType" id="searchType" style="display: inline!important; font-family: inherit">
-							<option value="stype_maHang">Mã hàng</option>
-							<option value="stype_tenMatHang">Tên mặt hàng</option>
-							<option value="stype_hanSD">Hạn sử dụng</option>
-							<option value="stype_congTySX">Công ty sản xuất</option>
-							<option value="stype_namSX">Năm sản xuất</option>
-							<option value="stype_loaiHang">Loại hàng</option>
-						</select>
-						<button class="btn btn-outline-black btn-sm" id="dark-mode">Tìm kiếm</button>
-					</div>
-				</form>
-				<div id="tip" class="text-success small-text"><b></b></div>
-			</div>*@
-
-			@{
-                if (Request["act"] == "timkiem")
-                {
-					<a href="/?c=dsmathang" class="btn btn-secondary waves-effect waves-light">Load lại đầy đủ dữ liệu</a>
-                }
-			}
-
 
 			<div class="card card-cascade">
 				<div class="view view-cascade gradient-card-header blue-gradient">
@@ -227,25 +190,15 @@
 
 
     $(document).ready(function () {
-		$(`#searchType option[value="${document.cookie}"]`).prop("selected", true);
-		if (document.cookie == "stype_hanSD" || document.cookir == "stype_namSX")
-		{
-			$("#tip").html(@consts.DATE_TEXT_HELP_TIP);
-		}
+        $(`#searchType option[value="${document.cookie}"]`).prop("selected", true);
+
     });
 
     $("#searchType").on("change", function () {
 
         document.cookie = this.value;
 
-
-
         switch (this.value) {
-            case "stype_hanSD":
-            case "stype_namSX":
-                $("#keyword").prop("placeholder", "mm/dd/yyyy");
-				$("#tip").html("Nhập <b>>=mm/dd/yyyy</b> để tìm mặt hàng SAU ngày này.<br>Nhập <b><=mm/dd/yyyy</b> để tìm mặt hàng TRƯỚC ngày này.<br>Nhập <b>==mm/dd/yyyy</b> để tìm mặt hàng ĐÚNG ngày này.");
-                break;
             default:
                 $("#keyword").prop("placeholder", "Nhập từ khóa vào đây");
                 $("#tip").html("");

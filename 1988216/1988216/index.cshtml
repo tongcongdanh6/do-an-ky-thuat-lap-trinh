@@ -8,17 +8,21 @@
 		if (Request["c"] == null)
 		{
 			@RenderPage($"~/MVC/Views/pages/login.cshtml", new { returnUrl = HttpUtility.UrlEncode(HttpContext.Current.Request.Url.AbsoluteUri) + "?c=home" });
-		}
-		else
-		{
-			@RenderPage($"~/MVC/Views/pages/login.cshtml", new { returnUrl = HttpUtility.UrlEncode(HttpContext.Current.Request.Url.AbsoluteUri) });
-		}
+        }
+        else if(Request["c"] == "register")
+        {
+			@RenderPage($"~/MVC/Views/pages/register.cshtml", new { returnUrl = HttpUtility.UrlEncode(HttpContext.Current.Request.Url.AbsoluteUri)});
+        }
+        else
+        {
+            @RenderPage($"~/MVC/Views/pages/login.cshtml", new { returnUrl = HttpUtility.UrlEncode(HttpContext.Current.Request.Url.AbsoluteUri) });
+        }
 
-	}
-	else
-	{
-		if (Request["c"] == null)
-		{
+    }
+    else
+    {
+        if (Request["c"] == null)
+        {
 			@RenderPage("~/MVC/Views/pages/home.cshtml");
 		}
 		else
